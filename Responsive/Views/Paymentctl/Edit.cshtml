@@ -1,0 +1,58 @@
+﻿@model Payment
+<!DOCTYPE html>
+
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Prompt' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="site.css">
+</head>
+
+<h2 class="my-4">ที่อยู่</h2>
+<div class="row text-start py-3 mx-4 border-top border-bottom w-100">
+    <div class="col">ชื่อ-นามสกุล</div>
+    <div class="col">ที่อยู่</div>
+    <div class="col">รหัสไปรษณีย์</div>
+    <div class="col">เบอร์โทรศัพท์</div>
+    <div class="col-4 col-sm-1"></div>
+    <div class="col-4 col-sm-1"></div>
+</div>
+<div class="row text-start my-3 mx-4 mb-4 w-100">
+    <form asp-action="Edit" method="post">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        <input asp-for="PaymentId" type="hidden" />
+        <div class="col">
+            <label asp-for="PaymentType" class=""></label>
+            <select class="form-select" aria-label="Payment Types" asp-for="PaymentType">
+                <option selected>Payment Types</option>
+                <option value="ธนาคารกรุงเทพ">ธนาคารกรุงเทพ</option>
+                <option value="ธนาคารกสิกรไทย">ธนาคารกสิกรไทย</option>
+                <option value="ธนาคารกรุงไทย">ธนาคารกรุงไทย</option>
+                <option value="ธนาคารไทยพาณิชย์">ธนาคารไทยพาณิชย์</option>
+                <option value="ธนาคารออมสิน">ธนาคารออมสิน</option>ฃ
+                <option value="บัตรเดบิต/เครดิต">บัตรเดบิต/เครดิต</option>
+            </select>
+            <span asp-validation-for="PaymentType" class="text-danger"></span>
+        </div>
+        <div class="col">
+            <label asp-for="HolderName" class=""></label>
+            <input asp-for="HolderName" class="form-control" />
+            <span asp-validation-for="HolderName" class="text-danger"></span>
+        </div>
+        <div class="col">
+            <label asp-for="PaymentNumber" class=""></label>
+            <input asp-for="PaymentNumber" class="form-control" />
+            <span asp-validation-for="PaymentNumber" class="text-danger"></span>
+        </div>
+        <div class="col">
+            <label asp-for="PhoneNumber" class=""></label>
+            <input asp-for="PhoneNumber" class="form-control" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-success"> บันทึก </button>
+    </form>
+
+</div>
+<div class="d-flex justify-content-end me-5 me-sm-0">
+    <button class="btn btn-success rounded-pill py-2 px-4">+ เพิ่มที่อยู่ใหม่</button>
+</div>

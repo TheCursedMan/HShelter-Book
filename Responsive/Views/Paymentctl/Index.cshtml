@@ -1,0 +1,231 @@
+﻿@model IEnumerable<Payment>
+
+<!DOCTYPE html>
+
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Prompt' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/Tew.css">
+</head>
+
+<style>
+    img{
+        object-fit:contain;
+    }
+    .address-header {
+        text-align: left;
+        margin-top: 50px;
+        margin-bottom: 20px;
+    }
+
+    .data-column {
+        display: flex;
+        align-items: center;
+    }
+
+    .data-element {
+        flex: 1;
+        margin-right: 10px;
+    }
+
+        .data-element p {
+            margin: 0;
+        }
+
+    .add-address-btn {
+        margin-top: 10px;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <h1 class="address-header">วิธีการชำระเงิน</h1>
+        <hr class="hrad" />
+
+        <div class="data-column">
+            <div class="data-element">
+                <p>ธนาคาร</p>
+            </div>
+        </div>
+        <hr class="hrad" />
+
+        <div class="data-column">
+            <div class="data-element">
+                <p>ธนาคาร</p>
+            </div>
+            <div class="data-element">
+                <p>ชื่อ-นามสกุล</p>
+            </div>
+            <div class="data-element">
+                <p>เลขท้าย 4 ตัว</p>
+            </div>
+            <div class="data-element">
+                <p>เบอร์โทรศัพท์</p>
+            </div>
+            <div class="data-element ">
+              
+            </div>
+            <div class="data-element">
+             
+            </div>
+        </div>
+
+        <br />
+
+        @foreach (var Paymentitem in Model)
+        {
+            @if (Paymentitem.PaymentType != "บัตรเดบิต/เครดิต")
+            {
+                <div class="data-column">
+                    <div class="data-element">
+                        @{
+                            switch (@Paymentitem.PaymentType)
+                            {
+                                case "ธนาคารกรุงเทพ":
+                                    <img src="https://www.kanjanabaramee.org/bbl_logo/" alt="Bank Logo" style="width: 80px; height: 80px;">
+                                    break;
+                                case "ธนาคารกสิกรไทย":
+                                    <img src="https://www.kasikornbank.com/SiteCollectionDocuments/about/img/logo/logo.png" alt="Bank Logo" style="width: 80px; height: 80px;">
+                                    break;
+                                case "ธนาคารกรุงไทย":
+                                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f0/Krung_Thai_Bank_logo.svg/1200px-Krung_Thai_Bank_logo.svg.png" alt="Bank Logo" style="width: 80px; height: 80px;">
+                                    break;
+                                case "ธนาคารไทยพาณิชย์":
+                                    <img src="https://i.pinimg.com/originals/02/31/87/023187a2f2dc47bbdc809b43c7667b3a.png" alt="Bank Logo" style="width: 80px; height: 80px;">
+                                    break;
+                                case "ธนาคารออมสิน":
+                                    <img src="https://i.pinimg.com/originals/fa/4b/4a/fa4b4a6ef2f95136051607a7fba619ba.png" alt="Bank Logo" style="width: 80px; height: 80px;">
+                                    break;
+
+                            }
+                        }
+                    </div>
+                    <div class="data-element">
+                        <p>@Paymentitem.HolderName</p>
+                    </div>
+                    <div class="data-element">
+                        <p>@Paymentitem.PaymentNumber</p>
+                    </div>
+                    <div class="data-element">
+                        <p>@Paymentitem.PhoneNumber</p>
+
+                    </div>
+                    <div class="data-element">
+                        <a asp-action="Edit" asp-route-id="@Paymentitem.PaymentId" class="text-secondary"> แก้ไข</a>
+                    </div>
+                    <div class="data-element">
+                        <a asp-action="Delete" asp-route-id="@Paymentitem.PaymentId" class="text-secondary"> ลบ</a>
+                    </div>
+
+                </div>
+                
+            }
+        }
+
+        <br />
+        <br />
+        <div class="data-column">
+            <div class="data-element">
+            </div>
+            <div class="data-element">
+            </div>
+            <div class="data-element">
+            </div>
+            <div class="data-element">
+
+                <a asp-controller="Paymentctl" asp-action="Create" class="btn btn-success rounded-pill">+ เพิ่มที่บัญชีธนาคาร</a>
+
+            </div>
+        </div>
+
+        <br />
+        <br />
+        @*Card payment*@
+        <div class="data-column">
+            <div class="data-element">
+                <p>บัตรเคดิต/บัตรเดบิต</p>
+            </div>
+        </div>
+        <hr class="hrad" />
+        <div class="data-column">
+            <div class="data-element">
+                <p>ประเภทบัตร</p>
+            </div>
+            <div class="data-element">
+                <p>ชื่อ-นามสกุล</p>
+            </div>
+            <div class="data-element">
+                <p></p>
+            </div>
+            <div class="data-element">
+                <p>เบอร์โทรศัพท์</p>
+            </div>
+            <div class="data-element">
+            </div>
+            <div class="data-element">
+            </div>
+        </div>
+
+        <br />
+
+        @foreach (var Paymentitem in Model)
+        {
+            @if (Paymentitem.PaymentType == "บัตรเดบิต/เครดิต")
+            {
+                <div class="data-column">
+                    <div class="data-element">
+                        @if (Paymentitem.PaymentNumber.StartsWith("5"))
+                        {
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Old_Visa_Logo.svg/2560px-Old_Visa_Logo.svg.png" alt="Card Logo" style="width: 80px; height: 80px;">
+                        }
+                        else if (Paymentitem.PaymentNumber.StartsWith("4"))
+                        {
+                            <img src="https://images.fastcompany.net/image/upload/w_1200,c_limit,q_auto:best/wp-cms/uploads/2023/04/i-3-90885664-mastercard-logo.jpg" alt="Card Logo" style="width: 80px; height: 80px;">
+                        }
+
+                    </div>
+                    <div class="data-element">
+                        <p>@Paymentitem.HolderName</p>
+                    </div>
+                    <div class="data-element">
+                        <p>@Paymentitem.PaymentNumber</p>
+                    </div>
+                    <div class="data-element">
+                        <p>@Paymentitem.PhoneNumber</p>
+
+                    </div>
+                    <div class="data-element">
+                        <a asp-action="Edit" asp-route-id="@Paymentitem.PaymentId" class="text-secondary"> แก้ไข</a>
+                    </div>
+                    <div class="data-element">
+                        <a asp-action="Delete" asp-route-id="@Paymentitem.PaymentId" class="text-secondary"> ลบ</a>
+                    </div>
+
+                </div>
+
+            }
+        }
+
+        <br />
+        <br />
+        <div class="data-column">
+            <div class="data-element">
+            </div>
+            <div class="data-element">
+            </div>
+            <div class="data-element">
+            </div>
+            <div class="data-element">
+                <a asp-action="Create" class="btn btn-success rounded-pill" onclick="addCardLink">+ เพิ่มบัตรเคดิต/บัตรเดบิต</a>
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="data-column">
+        </div>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>

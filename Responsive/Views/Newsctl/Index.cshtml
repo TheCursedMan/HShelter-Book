@@ -1,0 +1,178 @@
+﻿@model NewsEventCaller
+
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Prompt' rel='stylesheet'>
+    <style>
+        * {
+            font-family: prompt;
+        }
+    </style>
+</head>
+
+<body>
+    <!--img slider-->
+    <div class="container-fluid mx-0 w-100 mt-3 mb-5">
+        <div id="carouselExampleIndicatorsBanner" class="Banner carousel slide">
+            <div class="Banner carousel-inner">
+                <div class="Banner carousel-item active">
+                    <img src="/img/1.png" class="w-100 h-100">
+                </div>
+                <div class="Banner carousel-item ">
+                    <img src="/img/2.png" class="w-100 h-100">
+                </div>
+                <div class="Banner carousel-item ">
+                    <img src="/img/3(1).png" class="w-100 h-100">
+                </div>
+                <div class="Banner carousel-item ">
+                    <img src="/img/4(1).png" class="w-100 h-100">
+                </div>
+                <button class="Banner carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicatorsBanner" data-bs-slide="prev">
+                    <span class="Banner carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="Banner carousel-control-next" type="button" data-bs-target="#carouselExampleIndicatorsBanner" data-bs-slide="next">
+                    <span class="Banner carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+    <!--img slider-->
+    <!--Promotion-->
+    <div class="container-fluid my-5">
+        <h5 class="my-3 mx-3">โปรโมชั่น</h5>
+        <hr class="hr" />
+
+        <div class="container-fluid mx-auto my-2 mx-4">
+            <div class="row">
+
+                @foreach(var promoitem in Model.AllNews)
+                {
+                    
+                <div class="col-lg-3 col-sm-12 mx-1 mx-auto mb-3">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col mb-sm-3">
+                                <img src="/img/@promoitem.NewsImgName" class="" style="width:150px; height:150px;">
+                            </div>
+                            <div class="col">
+                                <div>@promoitem.NewsName</div>
+                                    <div>@promoitem.NewsDate</div>
+                                <br>
+                                <br>
+                                <br>
+                                <div class="text-end">
+                                    <a class="link-secondary" asp-controller="Newsctl" asp-action="Detail" asp-route-id="@promoitem.NewsId" >
+                                        อ่านต่อ
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                                            </svg>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+
+                
+            </div>
+        </div>
+    </div>
+    <!--Promotion-->
+    <!--New arrival-->
+    <div class="container-fluid my-5">
+        <h5 class="my-3 mx-3">หนังสือมาใหม่</h5>
+        <hr class="hr" />
+
+        <div class="container-fluid mx-auto my-2 mx-4">
+            <div class="row">
+                @if (ViewData["New Book"] != null)
+                {
+                    var newbook = ViewData["New Book"] as List<Book>;
+                    if(newbook!= null && newbook.Any())
+                    {
+                        @foreach(var newbookitem in newbook)
+                        {
+                            
+                        <div class="col-lg-3 col-sm-12 mx-1 mx-auto mb-3">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col mb-sm-3">
+                                        <img src="/img/@newbookitem.BookImgName" class="" style="width:150px; height:150px;">
+                                    </div>
+                                    <div class="col">
+                                        <div>@newbookitem.BookName</div>
+                                        <div>@DateTime.Now.ToString("dd/MM/yy")</div>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <div class="text-end">
+                                            <a asp-controller="Bookctl" asp-action="Detail" asp-route-id="@newbookitem.BookId" class="link-secondary" >
+                                                อ่านต่อ
+                                                <span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                                                    </svg>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        }
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <!--New arrival-->
+    <!--Event-->
+    <div class="container-fluid my-5">
+        <h5 class="my-3 mx-3">อีเวนต์</h5>
+        <hr class="hr" />
+
+        <div class="container-fluid mx-auto my-2 mx-4">
+            <div class="row">
+                @foreach(var eventitem in Model.Events)
+                {
+                <div class="col-lg-3 col-sm-12 mx-1 mx-auto mb-3">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col mb-sm-3">
+                                <img src="/img/@eventitem.EventImgName" class="" style="width:150px; height:150px;">
+                            </div>
+                            <div class="col">
+                                <div>@eventitem.EventName</div>
+                                <div>@eventitem.Eventdate</div>
+                                <br>
+                                <br>
+                                <br>
+                                <div class="text-end">
+                                    <a class="link-secondary" asp-controller="Eventctl" asp-action="Detail" asp-route-id="@eventitem.EventId">
+                                        อ่านต่อ
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                                            </svg>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    
+                }
+
+               
+            </div>
+        </div>
+    </div>
+    <!--Event-->
+</body>

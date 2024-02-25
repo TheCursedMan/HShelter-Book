@@ -1,0 +1,139 @@
+﻿@model IEnumerable<OrderCartItem>
+@*status*@
+<head>
+    <script src="https://kit.fontawesome.com/e85b695f85.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/OrderDetail.css" />
+    <style>
+        *{
+            font-family:prompt;
+        }
+    </style>
+</head>
+
+@* <ul class="nav nav-tabs">
+    <li class="d-flex flex-column align-items-center justify-content-center border border-success rounded-circle bg-success">
+        <a href ="" class="">
+            <i class="fa-solid fa-box-open fa-lg" style="color:white"></i>
+        </a>
+        <div class="mx-1"> จัดเตรียมส่งสินค้า </div>
+    </li>
+    <li class="d-flex flex-column align-items-center justify-content-center border border-success rounded-circle bg-success">
+        <a href="" class="">
+            <i class="fa-solid fa-box-open fa-lg" style="color:white"></i>
+        </a>
+        <div class="mx-1"> จัดเตรียมส่งสินค้า </div>
+    </li>
+    <li class="d-flex flex-column align-items-center justify-content-center border border-success rounded-circle bg-success">
+        <a href="" class="">
+            <i class="fa-solid fa-box-open fa-lg" style="color:white"></i>
+        </a>
+        <div class="mx-1"> จัดเตรียมส่งสินค้า </div>
+    </li>
+    <li class="d-flex flex-column align-items-center justify-content-center border border-success rounded-circle bg-success">
+        <a href="" class="">
+            <i class="fa-solid fa-box-open fa-lg" style="color:white"></i>
+        </a>
+        <div class="mx-1"> จัดเตรียมส่งสินค้า </div>
+    </li>
+</ul> *@
+<div class="container d-flex flex-wrap">
+    <div class="row mt-3 w-100 position-relative justify-content-center mb-2 " style="z-index:0;">
+        @*1st Status*@
+        <div class="w-75 bg-success" style="position:absolute; top:50%; height:5px; z-index:-1;"></div>
+        <div class="col-3 d-flex justify-content-center ">
+            <div class="border bg-success rounded-circle d-flex flex-column align-items-center justify-content-center py-3 statuscircle" style="">
+                <a href="" class="">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1950/1950715.png" class="statusimg" style="" width="70" height="70" />
+                </a>
+                <div class="mx-sm-1 px-1 text-white text-center statustext " style=""> จัดเตรียมสินค้า </div>
+            </div>
+        </div>
+        @*2nd Status*@
+        <div class="col-3 d-flex justify-content-center ">
+            <div class="border bg-success rounded-circle d-flex flex-column align-items-center justify-content-center py-3 statuscircle" style="">
+                <a href="" class="">
+                    <img src="https://cdn-icons-png.flaticon.com/512/814/814989.png" class="statusimg" width="70" height="70" />
+                </a>
+                <div class="mx-sm-1 px-1 text-white text-center statustext" style=""> เตรียมจัดส่งสินค้า </div>
+            </div>
+        </div>
+        @*3rd Status*@
+        <div class="col-3 d-flex justify-content-center ">
+            <div class="border bg-success rounded-circle d-flex flex-column align-items-center justify-content-center py-3 statuscircle" style="">
+                <a href="" class="">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3178/3178933.png" class="statusimg" width="70" height="70" />
+                </a>
+                <div class="mx-sm-1 px-1 text-white text-center statustext" style=""> กำลังจัดส่งสินค้า </div>
+            </div>
+        </div>
+        @*4th Status*@
+        <div class="col-3 d-flex justify-content-center">
+            <div class="border bg-success rounded-circle d-flex flex-column align-items-center justify-content-center py-3 statuscircle" style="">
+                <a href="" class="">
+                    <img src="https://cdn4.iconfinder.com/data/icons/shipping-delivery-14/96/Artboard_153-512.png" class="statusimg" width="70" height="70" />
+                </a>
+                <div class="mx-sm-1 px-1 text-white text-center statustext" style=""> ได้รับสินค้า </div>
+            </div>
+        </div>
+    </div>
+    @*Order list*@
+    <div class="d-flex flex-column flex-sm-row flex-wrap row mt-3 p-3 w-100 border-top border-dark">
+        @*left area (list)*@
+        <div class="col-12 col-sm-9 p-2 ">
+
+            @*--------List item----------*@
+            <div class="col-12  p-2">
+                @*Title*@
+                <div class="row w-100">
+                    <p class="col-8 text-start"> รายการสินค้า </p>
+                    <p class="col-4 text-center "> ราคา</p>
+                </div>
+                @*item list*@
+                @foreach(var Bookitem in Model)
+                {
+                    <div class="row w-100 my-3">
+                        <div class="col-8 text-start d-flex flex-row">
+                            <img class="ms-2" src="/img/@Bookitem?.Book?.BookImgName" width="75" height="100" style="" />
+                            <div class="ms-3">
+                                <p> @Bookitem?.Book?.BookName  </p> 
+                                <p> จำนวน : @Bookitem?.Quantity เล่ม</p>
+                            </div>
+                        </div>
+                        <p class="col-4 d-flex justify-content-center align-items-center border border-light">@(Bookitem?.Book?.BookPrice * Bookitem?.Quantity) บาท.-</p>
+                    </div>
+                }
+            </div>
+            @*--------Address--------*@
+            <div class="col-12 p-2 mt-3">
+                <h6 class="fw-bolder my-2"> ที่อยู่จัดส่ง </h6>
+                <div class="d-flex flex-row justify-content-between w-100">
+                    @*address detail*@
+                    <div class="fw-light text-black-50 ms-3 my-3">
+                        <p class=""> นายเหนื่อย เจรงเจรง </p>
+                        <p class=""> แม่น้ำอเมซอน....... 99999 เปรู</p>
+                        <p class=""> เบอร์โทร 0xx-xxx-xxxx</p>
+                    </div>
+                    @*edit??*@
+                </div>
+            </div>
+        </div>
+
+
+        @*right area*@
+        <div class="col-12 col-sm-3 my-2 my-sm-0 p-2 border border-dark">
+            @*Summarize ticket*@
+            <div class="col-12 order border-dark p-2 d-block h-100 ">
+                <h5 class="text-center"> สรุปรายการ</h5>
+                <div class="d-flex flex-wrap h-100">
+                    <p class="w-50"> ราคารวม </p>
+                    <p class="w-50 text-end"> @(((float?)ViewData["sumpriceorder"])) บาท.- </p>
+                    <p class="w-50"> ค่าส่ง </p>
+                    <p class="w-50 text-end"> 50 บาท.- </p>
+                    <hr class="w-100" style="color:black;" />
+                    <p class="w-50"> ราคาสุทธิ </p>
+                    <p class="w-50 text-end"> @(((float?)ViewData["sumpriceorder"]+50)) บาท.- </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

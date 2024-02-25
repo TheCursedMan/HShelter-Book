@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Book>
+
+@foreach (var item in Model)
+{
+    <div class="col-xxl-3 col-lg-6 col-md-6 col-12 position-relative card px-1 py-1 mx-3 mx-xl-2 p-3 mb-5 bg-white justify-content-center" style="width: 15rem;">
+        <a href="#" class="mx-auto">
+            <a asp-controller="Bookctl" asp-action="Detail" asp-route-id="@item.BookId"><img src="~/img/@item.BookImgName" class="card-img-top  mt-3" style="width: 190px; height: 260px;"></a>
+        </a>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-8 text-start text-truncate" style="padding-left:1.25rem;">
+                    <a asp-controller="Bookctl" asp-action="Detail" asp-route-id="@item.BookId" class="card-title text-start  text-decoration-none text-dark"> @item.BookName </a>
+                </div>
+                <div class="col-4 text-end">
+                    <span class="text-end text-warning">
+                        4.9
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc107" class="bi bi-star-fill" viewBox="0 0 16 16">
+                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="d-flex flex-row">
+                    <span class="col-4 text-decoration-line-through text-danger">335.00</span>
+                    <span class="col-4 text-start">@item.BookPrice.-</span>
+                    <div class="col-4 text-end">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="#1C5739" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <a onclick="addToCart(@item.BookId)" style="cursor: pointer;"> <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" /></a>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

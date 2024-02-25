@@ -1,0 +1,27 @@
+﻿@model News
+<head>
+    <link rel="stylesheet" href="~/css/Tew.css" />
+</head>
+
+<div class="container container-sm container-margin-top container-custom-height">
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="tewfont text-center smaller-font">
+                <p>@Model.NewsName</p>
+            </div>
+            <div class="justify-content-center container-margin-top">
+                <img src="/img/@Model.NewsImgName" class="img-responsive img-smaller" />
+            </div>
+            <div class="tewfont smallers-font container-margin-top" style="margin-left: 65px; margin-right: 65px;">
+                <p style="text-align: left;">@Model.NewsDate</p>
+            </div>
+            <div class="tewfont smallers-font" style="margin-top: 25px; margin-left: 65px; margin-right: 65px;">
+                <p style="text-align: left; font-weight: 900;">รายละเอียด</p>
+            </div>
+            <div class="tewfont smallers-font" style="margin-top: 25px; margin-left: 65px; margin-right: 65px;">
+                <p style="text-align: left;">@Model.NewsDescription</p>
+            </div>
+           
+        </div>
+    </div>
+</div>

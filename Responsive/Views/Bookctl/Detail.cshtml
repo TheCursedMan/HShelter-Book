@@ -1,0 +1,243 @@
+﻿@model Book
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<head>
+    <style>
+        <!-- rating-- >
+        .rating {
+            margin-top: 40px;
+            border: none;
+            float: left;
+        }
+
+        .rating > label {
+            color: #90A0A3;
+            float: right;
+        }
+
+            .rating > label:before {
+                margin: 5px;
+                font-size: 2em;
+                font-family: FontAwesome;
+                content: "\f005";
+                display: inline-block;
+            }
+
+        .rating > input {
+            display: none;
+        }
+
+            .rating > input:checked ~ label,
+            .rating:not(:checked) > label:hover,
+            .rating:not(:checked) > label:hover ~ label {
+                color: #F79426;
+            }
+
+                .rating > input:checked + label:hover,
+                .rating > input:checked ~ label:hover,
+                .rating > label:hover ~ input:checked ~ label,
+                .rating > input:checked ~ label:hover ~ label {
+                    color: #FECE31;
+                }
+
+
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row py-3">
+            <div class="col-md-4">
+                <img class="img-fluid mx-auto d-block mb-3" src="~/img/@Model.BookImgName" width="300" height="400">
+
+                <div class="my-1 text-center">
+                    @if(Model?.BookPrice != null && Model?.DiscountPer != null)
+                    {
+                        float? discountedPrice = (Model.BookPrice * 100) / (100 - Model.DiscountPer);
+                        int? roundedPrice = (int?)Math.Round((decimal)discountedPrice, MidpointRounding.AwayFromZero);
+                        <p class="fs-2 fw-bold" style="color: #1F8157">@Model.BookPrice.00 บาท</p>
+                        <p class="fs-6 fw-normal text-decoration-line-through text-danger">@roundedPrice.00 บาท</p>
+                        <p class="fs-6 " class="text-danger">(@Model.DiscountPer %)</p>
+                    }
+                    else
+                    {
+                        <p class="fs-2" style="color: #1F8157">@Model.BookPrice.00 บาท</p>
+                    }
+                </div>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    
+                    <div class="container-fluid my-1 text-center">
+                            <div class="w-100 d-flex text-center justify-content-center">
+                                <button onclick="addToCart(@Model.BookId)" class="btn btn-success w-50 rounded-pill">Add to Cart</button>
+                            </div>
+                    </div>
+                }
+                else{
+                <div class="container-fluid my-1 text-center">
+                     <a asp-controller="Accountctl" asp-action="Login" class="btn btn-success rounded"> Login</a>
+                </div>
+                }
+                <hr class="d-md-none" />
+            </div>
+            <div class="col-md-8 py-3 px-5">
+                <div class="container mb-2">
+                    <h2 style="color: #1F8157">@Model.BookName</h2>
+                    <p>ผู้เขียน: <span style="color: #1F8157">@Model.AuthorName</span></p>
+                    <p>สำนักพิมพ์: <span style="color: #1F8157">@Model.Publisher</span></p>
+                    @try{
+                        <p>หมวดหมู่: <span style="color: #1F8157">@Model.BookCategory?.CategoryName</span> </p>
+                    }
+                    catch{
+
+                        <p>หมวดหมู่: </p>
+                    }
+
+                    <hr />
+                </div>
+
+                <div class="container mb-2">
+                    <h3>เรื่องย่อ:</h3>
+                    <p style="color: #1F8157">@Model.Plot</p>
+                    <hr />
+                </div>
+
+                @if (User.Identity.IsAuthenticated && (int?)ViewData["UserReview"] == 0)
+                {
+                <form method="post" asp-controller="Bookctl" asp-action="Review">
+                        <input type="hidden" name="BookId" value="@Model.BookId">
+                    <div class="container mb-2">
+                        <h3>รีวิว: </h3>
+                      
+                        <label>ให้คะแนนสินค้า: </label>
+                        <div class="d-flex flex-row justify-content-start">
+
+                            <div class="rating">
+                                <input type="radio" id="star5" name="rating" value="5" />
+                                <label class="star" for="star5" title="Awesome" aria-hidden="true"></label>
+                                <input type="radio" id="star4" name="rating" value="4" />
+                                <label class="star" for="star4" title="Great" aria-hidden="true"></label>
+                                <input type="radio" id="star3" name="rating" value="3" />
+                                <label class="star" for="star3" title="Very good" aria-hidden="true"></label>
+                                <input type="radio" id="star2" name="rating" value="2" />
+                                <label class="star" for="star2" title="Good" aria-hidden="true"></label>
+                                <input type="radio" id="star1" name="rating" value="1" />
+                                <label class="star" for="star1" title="Bad" aria-hidden="true"></label>
+                            </div>
+                        </div>
+                    
+                    </div>
+                    <div class="form-outline mx-auto" style="width:95%;">
+                        <textarea class="form-control" name="Comment" id="textAreaExample" rows="4" placeholder="เขียนความคิดเห็นของคุณ..."></textarea>
+                    </div>
+                    <div class="text-end mt-4 me-4">
+                        <button type="submit" class="btn btn-success rounded-pill" a href="#">ส่งความคิดเห็น</button>
+                    </div>
+                </form>
+
+                <hr class="hr" />
+                }
+                else if ((int?)ViewData["UserReview"] == 1)
+                {
+
+                }
+                else
+                {
+                    <div class="container mb-2">
+                        <h3>รีวิว: </h3>
+                        <a asp-controller="Accountctl" asp-action ="Login" class="text-white btn btn-success" > Need to be login first</a>
+                    </div>
+                }
+
+                @if (ViewData["AllReviews"] != null)
+                {
+                    var allReviews = ViewData["AllReviews"] as List<(Review Review, string Username)>;
+                    <div class="container mb-2">
+                        <h3>ความคิดเห็นทั้งหมด:</h3>
+                        @if (ViewData["CurrentUserReview"] != null)
+                        {
+                            var CurrentUserReview = ViewData["CurrentUserReview"] as Review;
+                            <div class="w-100 p-3 my-2" style="background-color:#D1E4D2; color:#686868; border-radius: 20px 20px 20px 20px;">
+                                <!-- Display reviewer's information -->
+                                <!-- You can customize the layout according to your design -->
+                                <img src="~/img/@CurrentUserReview?.Account?.CustomerImgName" width="35" height="35" style="object-fit:cover; border-radius:50%;">
+                                <label> @CurrentUserReview?.Account?.CustomerName </label>
+                                <label class="fst-italic ms-3" style="color: #aaa;">@CurrentUserReview.ReviewDate.ToString("yyyy-MM-dd HH:mm")</label>
+
+                                <!-- Display the rating stars -->
+                                <div style="color: #FFD600;">
+                                    @for (int i = 0; i < CurrentUserReview.Rating; i++)
+                                    {
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </span>
+                                    }
+                                </div>
+
+                                <!-- Display the comment -->
+                                <div>@CurrentUserReview.Comment </div>
+                            </div>
+                        }
+                        @foreach (var ( review, username) in allReviews)
+                    {
+                            <div class="w-100 p-3 my-2" style="background-color:#ECECEC; color:#686868; border-radius: 20px 20px 20px 20px;">
+                                <img src="~/img/@review?.Account?.CustomerImgName" width="35" height="35" style="object-fit:cover" class="" alt="">
+                                <label>@username </label><label class="fst-italic ms-3" style="color: #aaa;">@review.ReviewDate.ToString("yyyy-MM-dd HH:mm")</label>
+                                <div class="ms-4" style="color: #FFD600;">
+                                    <!-- Display the rating stars -->
+                                    @for (int i = 0; i < review.Rating; i++)
+                                    {
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </span>
+                                    }
+                                </div>
+
+                                <div class="m-4 p-2 bg-white">@review.Comment</div>
+                            </div>
+                    }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-danger"> No one review...</div>
+                }
+
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addToCart(bookId) {
+            // Make an AJAX request to the server
+            fetch(`/Cartctl/AddToCart?bookId=${bookId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ bookId: bookId })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Book added to cart!');
+                        // Optionally, perform any UI update indicating the book was added to the cart
+                        // For example, display a message or update the UI dynamically
+                    } else {
+                        console.error('Failed to add book to cart');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</body>

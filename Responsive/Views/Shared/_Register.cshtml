@@ -1,0 +1,93 @@
+﻿@model Register
+
+<head>
+    <link rel="stylesheet" href="~/css/Popup.css" asp-append-version="true" />
+</head>
+
+<div class="popup" id="register-popup">
+    <div class="center-container">
+        <div class="white-box">
+            <div id="close-register-popup-btn" class="close-button">&#10006;</div>
+            <div class="row">
+                <div>
+                    <p class="tewf text-center">ลงทะเบียน</p>
+                </div>
+                <hr class="hr" />
+
+                <form asp-controller="Accountctl" asp-action="Register" method="post">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+
+                        <div class="form-group col">
+                            <input asp-for="CustomerName" class="form-control" placeholder="ชื่อ" aria-label="ชื่อ" required />
+                            <span asp-validation-for="CustomerName" class="text-danger"> </span>
+                        </div>
+
+                        <div class="form-group col-xl-6 mt-xl-0 col-sm-12 mt-sm-4 mt-4">
+                            <input asp-for="CustomerSurname" class="form-control" placeholder="นามสกุล" aria-label="นามสกุล" required />
+                            <span asp-validation-for="CustomerSurname" class="text-danger"> </span>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="form-group col">
+                            <input id="birthdate" asp-for="BirthDate" class="form-control" type="text" placeholder="วัน/เดือน/ปีเกิด" aria-label="วัน/เดือน/ปีเกิด">
+                            <span asp-validation-for="BirthDate" class="text-danger"> </span>
+                        </div>
+
+                        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+                        <script>
+                            const birthdateInput = document.getElementById("birthdate");
+                            flatpickr(birthdateInput, {
+                                dateFormat: "d/m/Y",
+                                placeholder: "วัน/เดือน/ปีเกิด",
+                            });</script>
+
+
+                        <div class="form-group col-xl-6 mt-xl-0 col-sm-12 mt-sm-4 mt-4">
+                            <select asp-for="Gender" class="form-select" aria-label="เลือกเพศ" required>
+                                <option value="" selected disabled>เพศ</option>
+                                <option value="Male">ชาย</option>
+                                <option value="Female">หญิง</option>
+                                <option value="Other">อื่นๆ</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"> </span>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="form-group">
+                        <input asp-for="Email" class="form-control" type="email" placeholder="อีเมล์" aria-label="อีเมล์" required>
+                        <span asp-validation-for="Email" class="text-danger"> </span>
+                    </div>
+                    <br />
+
+                    <div class="form-group">
+                        <input asp-for="Password" class="form-control" type="password" placeholder="รหัสผ่าน" aria-label="รหัสผ่าน" required />
+                        <span asp-validation-for="Password" class="text-danger"> </span>
+                    </div>
+                    <br />
+
+                    <div class="form-group">
+                        <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="ยืนยันรหัสผ่าน" aria-label="ยืนยันรหัสผ่าน" required />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"> </span>
+                    </div>
+                    <br />
+
+                    <div class="form-group">
+                        <input type="checkbox" required />
+                        <label>ฉันยอมรับ<span class="underline">นโยบายความเป็นส่วนตัว</span></label>
+                    </div>
+                    <br />
+
+                    <center><button type="submit" class="btn btn-success rounded-pill" style="width: 42%;">ลงทะเบียน</button></center>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

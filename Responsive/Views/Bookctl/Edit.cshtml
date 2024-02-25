@@ -1,0 +1,132 @@
+﻿@model Book
+@{
+    ViewData["Title"] = "Edit";
+}
+<h1 class="text-center"> Edit </h1>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-controller="Bookctl" asp-action="Edit" enctype="multipart/form-data">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="BookId" />
+            <div class="form-group">
+                <label asp-for="BookName" class="control-label"></label>
+                <input asp-for="BookName" class="form-control">
+                <span asp-validation-for="BookName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BookPrice" class="control-label"></label>
+                <input asp-for="BookPrice" class="form-control">
+                <span asp-validation-for="BookPrice" class="text-danger"></span>
+            </div>
+
+             <div class="form-group">​
+
+                <label asp-for="IsDiscount"> Is book discount?</label>​
+                <select asp-for="IsDiscount" class="form-select" aria-label=" Is book discount?" id="discountSelect">
+                     <option selected>Open this select menu</option>
+                      <option value="true">Yes</option>
+                       <option value="false">No</option>
+                </select>
+                <span asp-validation-for="IsDiscount" class="text-danger"></span>
+            </div>​
+
+             <div class="form-group">​
+
+                <label asp-for="DiscountPer"> ลดราคากี่ % (ตัวเลขเด้อ) (แนะนำไม่เกิน 30% เพราะอันนี้จะไปคำนวณเป็นราคาก่อนหน้าราคา Bookprice)</label>​
+
+                <input asp-for="DiscountPer" class="form-control" step="1" min="0" max="100" id="discountInput"/>​
+                <span asp-validation-for="DiscountPer" class="text-danger"></span>
+            </div>​
+            <div class="form-group">
+                <img src="~/img/@Model.BookImgName" alt="รูปภาพหนังสือ @Model.BookImgName" width="300" height="300" style="object-fit:cover;" />
+                <label asp-for="BookImg" class="control-label"></label>
+                <input asp-for="BookImg" class="form-control" accept="image/*">
+                <span asp-validation-for="BookImg" class="text-danger"></span>
+            </div>
+             <div class="form-group">​
+                <label asp-for="AuthorName"></label>​
+                <input type="Text" asp-for="AuthorName" class="form-control"/>​
+                <span asp-validation-for="AuthorName" class="text-danger"></span>
+                </div>
+
+            <div class="form-group">​
+
+                <label asp-for="Publisher"></label>​
+
+                <input type="Text" asp-for="Publisher" class="form-control"/>​
+                <span asp-validation-for="Publisher" class="text-danger"></span>
+            </div>​
+            <div class="form-group"> 
+
+                <label asp-for="BookType"> ประเภทหนังสือ</label>​
+                <select asp-for="TypeId" class="form-select" aria-label=" ประเภทหนังสือ">
+                     <option selected>เลือกประเภทหนังสือ</option>
+                      <option value="1">นิยาย/มังงะ</option>
+                       <option value="2">หนังสือเรียน</option>
+                       <option value="3">ปรัชญา</option>
+                </select>
+                <span asp-validation-for="BookType" class="text-danger"></span>
+
+            </div>
+
+             <div class="form-group">
+                <label asp-for="CategoryId">Select Book Category:</label>
+                <select asp-for="CategoryId" class="form-control" id="categorySelect">
+                    <option value="">-- เลือกหมวดหมู่ --</option>
+                    @{
+                        var categories = ViewData["BookCategoryForm"] as List<BookCategory>;
+                        if(categories != null)
+                        {
+                             @foreach (var category in categories)
+                            {
+                                <option value="@category.CategoryId">@category.CategoryName</option>
+                            }
+                        }
+                        else{}
+                    }
+                   
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+
+            <br />
+             <div class="form-group">
+                <label asp-for="Plot"></label>
+                <textarea asp-for="Plot" class="form-control"></textarea>
+            </div>
+
+            <div class="form-group">​
+
+                <label asp-for="BookRank"></label>​
+                <input type="number" asp-for="BookRank" class="form-control"/>​
+                <span asp-validation-for="BookRank" class="text-danger"></span>
+
+            </div>​
+            <div class="form-gruop">
+                <button type="submit" class="btn btn-warning"> Update </button>
+                <a asp-action="List">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#discountSelect').change(function () {
+            var isDiscount = $(this).val();
+            var discountInput = $('#discountInput');
+            
+            if (isDiscount === 'false') {
+                discountInput.prop('disabled', true);
+                discountInput.val(''); // Clear input value when disabled
+            } else {
+                discountInput.prop('disabled', false);
+            }
+        });
+
+        $('#discountSelect').trigger('change'); // Trigger change event on page load
+    });
+</script>

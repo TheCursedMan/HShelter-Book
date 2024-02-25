@@ -1,0 +1,51 @@
+﻿
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Prompt' rel='stylesheet'>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/Popup.css" asp-append-version="true" />
+</head>
+
+<form asp-controller="Accountctl" asp-action="Login" method="post">
+
+    @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+    <partial name="_ValidationScriptsPartial" model="Model" />
+    @if (@TempData["Error"]?.ToString() != null)
+    {
+        <div class="alert alert-danger"> @TempData["Error"]?.ToString() </div>
+        
+    }
+    <div class="form-group">
+        <br />
+        <input name="Email" class="form-control taller-input" placeholder="ชื่อผู้ใช้หรืออีเมล" aria-label="ชื่อผู้ใช้หรืออีเมล" required />
+        <br />
+        <span name="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input name="Password" class="form-control taller-input" type="password" placeholder="รหัสผ่าน" aria-label="รหัสผ่าน" required />
+        <br />
+        <span name="Password" class="text-danger"></span>
+    </div>
+
+
+    @*  <div class="form-group">
+    <input type="checkbox" required />
+    <label for="RememberMe">จดจำฉันไว้</label>
+    <span class="underline" style="float: right;">ลืมรหัสผ่าน?</span>
+    <br />
+    <br />
+    </div> *@
+    <center><button type="submit" class="btn btn-success rounded-pill" style="width: 30%;">เข้าสู่ระบบ</button></center>
+    <br />
+    <br />
+    <br />
+
+    <div class="form-group center-content">
+        <span class="underline">หากยังไม่ได้สมัครสมาชิก โปรด</span>
+        <button type="button" id="show-register-popup-btn" class="btn btn-success rounded-pill" style="margin-left: 10px; " width: 42%;">ลงทะเบียน</button>
+    </div>
+</form>
+
+@section Script{
+    <partial name="_ValidationScriptsPartial" />
+}

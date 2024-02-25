@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Book>
+
+<div class="row">
+
+    <div class="w-50">
+        <a asp-action="Create" class="btn btn-success my-3 text-start"> Create Book</a>
+    </div>
+    <div class="w-50">
+        <a asp-action="CategoryList" class="btn btn-secondary my-3 text-start"> Category List </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col border">
+        BookId
+    </div>
+    <div class="col border">
+        Bookname
+    </div>
+    <div class="col border">
+        BookPrice
+    </div>
+    <div class="col border">
+        Is Discount?
+    </div>
+    <div class="col border">
+        Discount Percent
+    </div>
+    <div class="col border">
+        CategoryID
+    </div>
+    <div class="col border">
+        CategoryName
+    </div>
+    <div class="col border">
+        TypeName
+    </div>
+    <div class="col border">
+        BookRank
+    </div>
+    <div class="col border">
+        Edit
+    </div>
+    <div class="col border">
+        Delete
+    </div>
+</div>
+@foreach (var item in Model)
+{
+    <div class="row">
+        <div class="col border">
+            @Html.DisplayFor(modelitem => item.BookId)
+        </div>
+        <div class="col border">
+            @Html.DisplayFor(modelitem => item.BookName)
+        </div>
+        <div class="col border">
+            @Html.DisplayFor(modelitem => item.BookPrice)
+        </div>
+        @if (item.IsDiscount == true)
+        {
+            <div class="col border text-success ">
+            @item.IsDiscount
+            </div>
+        }
+        else
+        {
+            <div class="col border text-danger">
+            @item.IsDiscount
+            </div>
+        }
+
+        <div class="col border">
+            @Html.DisplayFor(modelitem => item.DiscountPer)@if (item.DiscountPer != null)
+            {
+                <span>% </span>
+            }
+        </div>
+        <div class="col border">
+            @Html.DisplayFor(modelitem => item.BookCategory.CategoryId)
+        </div>
+        <div class="col border">
+            @Html.DisplayFor(modelitem => item.BookCategory.CategoryName)
+        </div>
+        <div class="col border">
+            @Html.DisplayFor(modelitem => item.BookType.TypeName)
+        </div>
+        <div class="col border">
+            @Html.DisplayFor(modelitem => item.BookRank)
+        </div>
+        <div class="col border">
+            <a asp-action="Edit" asp-route-id="@item.BookId"> Edit</a>
+        </div>
+        <div class="col border">
+            <a asp-action="Delete" asp-route-id="@item.BookId"> Delete</a>
+        </div>
+    </div>
+}

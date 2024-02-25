@@ -1,0 +1,863 @@
+﻿@model IEnumerable<Book>
+<head>
+    <style>
+        *{
+            font-family: prompt;
+        }
+    </style>
+</head>
+<div class="container-fluid mx-0 w-100 mt-3 mb-5">
+    <div id="carouselExampleIndicatorsBanner" class="Banner carousel slide">
+        <div class="Banner carousel-inner">
+            <div class="Banner carousel-item active">
+                <img src="/img/1.png" class="w-100 h-100">
+            </div>
+            <div class="Banner carousel-item ">
+                <img src="/img/2.png" class="w-100 h-100">
+            </div>
+            <div class="Banner carousel-item ">
+                <img src="/img/3(1).png" class="w-100 h-100">
+            </div>
+            <div class="Banner carousel-item ">
+                <img src="/img/4(1).png" class="w-100 h-100">
+            </div>
+            <button class="Banner carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicatorsBanner" data-bs-slide="prev">
+                <span class="Banner carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="Banner carousel-control-next" type="button" data-bs-target="#carouselExampleIndicatorsBanner" data-bs-slide="next">
+                <span class="Banner carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+</div>
+<!--img slider-->
+<!--Search-->
+<form asp-controller="Bookctl" asp-action="Search">
+    <div class="container-fluid text-center mb-5 mx-auto" style="width: 450px;">
+        <div class="input-group">
+            <input type="search" class="form-control shadow mb-5 bg-body-tertiary" name="querry" style="border-radius: 50px 0 0 50px;" placeholder="Search..." aria-label="Search..." aria-describedby="search-addon">
+            <button type="submit" class="btn btn-outline-dark shadow mb-5 bg-body-tertiary" style="border-radius: 0 50px 50px 0; width: 45px">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</form>
+<!--Search-->
+<!--main-->
+<div class="container-fluid  text-center my-5">
+    <div class="row">
+
+        <!--Flash sale-->
+        <div class="col-lg-12  col-xl-8 text-start">
+            <h5 class="my-3 mx-3">ลดแรงแซงทางโค้ง</h5>
+            <hr class="hr" />
+           @*  <div class="text-end my-2">
+                <a  class="link-secondary">
+                    อ่านต่อ
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                        </svg>
+                    </span>
+                </a>
+            </div> *@
+            <div class="row">
+               
+                @if(ViewData["SalesBook"] != null)
+                {
+                    var allsales = ViewData["SalesBook"] as List<Book>;
+                    var firstfivestanding = allsales?.Take(8).ToList();
+                    if(firstfivestanding != null && firstfivestanding.Any()){
+                        @foreach(var saleitem in firstfivestanding){
+                                <!--Item card-->
+                                <div class="card px-1 py-1 mx-3 mx-xl-4 shadow p-3 mb-5 bg-white justify-content-center" style="width: 15rem;">
+                                    <a asp-controller="Bookctl" asp-action="Detail" asp-route-id="@saleitem.BookId" class="mx-auto">
+                                        <img src="/img/@saleitem.BookImgName" class="card-img-top  mt-3" style="width: 190px; height: 260px;">
+                                    </a>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col text-truncate">
+                                            <a asp-controller="Bookctl" asp-action="Detail" asp-route-id="@saleitem.BookId" class="card-title text-start  text-decoration-none text-dark">@saleitem.BookName</a>
+                                            </div>
+                                            <div class="col-4 text-end">
+                                                <span class="text-end text-warning">
+                                                    4.9
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc107" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                                @if (saleitem.DiscountPer != null && saleitem?.BookPrice != null)
+                                                {
+                                                    <div class="col-xl-auto text-decoration-line-through text-danger">
+                                                        @{
+                                                            float? discountedPrice = (saleitem.BookPrice * 100) / (100 - saleitem.DiscountPer);
+                                                            int roundedPrice = (int)Math.Round((decimal)discountedPrice, MidpointRounding.AwayFromZero);
+                                                        }
+                                                        @roundedPrice.00 บาท
+                                                    </div>
+                                                }
+                                                 <div class="col">@saleitem.BookPrice บาท-</div>
+                                            @* <div class=" col text-end">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="#1C5739" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                                                </svg>
+                                            </div> *@
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Item card-->
+
+                        }
+                    }
+                }
+            </div>
+        </div>
+        <!--Flash sale-->
+        <!--Top 10-->
+        <div class="col-lg-12 col-xl-4 text-start">
+            <h5 class="my-3 mx-3">หนังสือขายดี 10 อันดับ</h5>
+            <hr class="hr" />
+
+            @if(ViewData["BookRank"] != null)
+            {
+                var allBookRank = ViewData["BookRank"] as List<Book>;
+                if(allBookRank != null && allBookRank.Any())
+                {
+                    @foreach(var bookitem in allBookRank)
+                    {
+                        
+                    <!--Item-->
+                    <div class="card w-100 p-4 bg-white outline-secondary rounded shadow p-3 mb-3" style=" flex-direction: row; position: relative">
+                        <div class="" style="position: absolute; top: 15px; left: 12px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-award-fill" viewBox="0 0 16 16">
+                                <path d="m8 0 1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 6l.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 12l-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 6l-.306-1.854 1.337-1.32.842-1.68L6.331.864 8 0z" class="position-relative" />
+                                <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z" />
+                                <span class="text-white fw-bold fs-6 position-absolute" style="z-index:1; top:10%; left:37.5%;"> @bookitem.BookRank </span>
+                            </svg>
+                        </div>
+                            <a asp-controller="Bookctl" asp-action="Detail" asp-route-id="@bookitem.BookId">
+                            <img src="/img/@bookitem.BookImgName" class="card-img-top" style="width: 140px; height:200px; ">
+                        </a>
+                        <div class="card-body ms-2">
+                            <a asp-controller="Bookctl" asp-action="Detail" asp-route-id="@bookitem.BookId" class="text-decoration-none link-dark"><h5 class="card-title text-truncate">@bookitem.BookName</h5></a>
+                            <p class="card-text">@bookitem.AuthorName</p>
+                            <br>
+                            <br>
+                            <p class="card-text sticky-bottom" style="position: absolute; bottom: 25px;">@bookitem.BookPrice.-</p>
+                        </div>
+                    </div>
+                    <!--Item-->
+                    }
+                    
+                }
+
+            }
+
+        </div>
+        <!--Top 10-->
+
+    </div>
+</div>
+<!--main-->
+<!--Recommand-->
+<div class="container-fluid justify-content-center my-4">
+    <h5 class="my-3 mx-3">แนะนำโดยคนดัง</h5>
+    <hr class="hr" />
+    <div class="container-fluid my-4">
+
+        <!--Slider-->
+        <div id="carouselExampleRecommand" class="carousel carousel-dark slide d-none d-lg-block">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="card-wrapper d-flex">
+                        <!--Item-->
+                        <div class="card mx-6 mx-auto shadow p-3 mb-5" style="width: 39rem;">
+                            <a asp-controller="Bookctl" asp-action="Index" asp-route-catId="3" class=" text-decoration-none">
+                                <img src="/img/R1.png" class="card-img-top" style="width: 100%; height: 300px;" />
+                                <div class="card-body my-auto">
+                                    <p class="card-title link-dark">#นัมจุนอ่าน</p>
+                                </div>
+                            </a>
+                        </div>
+                        <!--Item-->
+                        <!--Item-->
+                        <div class="card mx-6 mx-auto shadow p-3 mb-5" style="width: 39rem;">
+                            <a asp-controller="Bookctl" asp-action="Index" asp-route-catId="4" class=" text-decoration-none">
+                                <img src="/img/R2.png" class="card-img-top" style="width: 100%; height: 300px;" />
+                                <div class="card-body my-auto">
+                                    <p class="card-title link-dark">#GOT7อ่าน</p>
+                                </div>
+                            </a>
+                        </div>
+                        <!--Item-->
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card-wrapper d-flex">
+                        <!--Item-->
+                        <div class="card mx-6 mx-auto shadow p-3 mb-5" style="width: 39rem;">
+                            <a asp-controller="Bookctl" asp-action="Index" asp-route-catId="5" class=" text-decoration-none">
+                                <img src="/img/R3.png" class="card-img-top" style="width: 100%; height: 300px;" />
+                                <div class="card-body my-auto">
+                                    <p class="card-title link-dark">#เจมีลี้อ่าน</p>
+                                </div>
+                            </a>
+                        </div>
+                        <!--Item-->
+                        <!--Item-->
+                        <div class="card mx-6 mx-auto shadow p-3 mb-5" style="width: 39rem;">
+                            <a asp-controller="Bookctl" asp-action="Index" asp-route-catId="6" class=" text-decoration-none">
+                                <img src="/img/R4.png" class="card-img-top" style="width: 100%; height: 300px;" />
+                                <div class="card-body my-auto">
+                                    <p class="card-title link-dark">#Stevejobอ่าน</p>
+                                </div>
+                            </a>
+                        </div>
+                        <!--Item-->
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" style="background-color: #e1e1e1; width: 5vh; height: 5vh; border-radius: 50%; top: 50%; transform: translateY(-50%);" type="button" data-bs-target="#carouselExampleRecommand" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" style="width: 1.5rem; height: 1.5rem;" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" style="background-color: #e1e1e1; width: 5vh; height: 5vh; border-radius: 50%; top: 50%; transform: translateY(-50%);" type="button" data-bs-target="#carouselExampleRecommand" data-bs-slide="next">
+                <span class="carousel-control-next-icon" style="width: 1.5rem; height: 1.5rem;" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <!--Slider-->
+        <!--SliderForLG-->
+        <div id="carouselExampleRecommandControlSmallScreen" class="carousel slide carousel-dark slide d-lg-none">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <!--Item-->
+                    <div class="card mx-6 mx-auto shadow p-3 mb-5" style="width: 100%;">
+                        <a href="#" class=" text-decoration-none">
+                            <img src="#" class="card-img-top" style="width: 100%; height: 100%;" />
+                            <div class="card-body my-auto">
+                                <p class="card-title link-dark">#นัมจุนอ่าน</p>
+                            </div>
+                        </a>
+                    </div>
+                    <!--Item-->
+                </div>
+                <div class="carousel-item">
+                    <!--Item-->
+                    <div class="card mx-6 mx-auto shadow p-3 mb-5" style="width: 100%;">
+                        <a href="#" class=" text-decoration-none">
+                            <img src="#" class="card-img-top" style="width: 100%; height: 100%;" />
+                            <div class="card-body my-auto">
+                                <p class="card-title link-dark">#นัมจุนอ่าน</p>
+                            </div>
+                        </a>
+                    </div>
+                    <!--Item-->
+                </div>
+                <div class="carousel-item">
+                    <!--Item-->
+                    <div class="card mx-6 mx-auto shadow p-3 mb-5" style="width: 100%;">
+                        <a href="#" class=" text-decoration-none">
+                            <img src="#" class="card-img-top" style="width: 100%; height: 100%;" />
+                            <div class="card-body my-auto">
+                                <p class="card-title link-dark">#นัมจุนอ่าน</p>
+                            </div>
+                        </a>
+                    </div>
+                    <!--Item-->
+                </div>
+                <div class="carousel-item">
+                    <!--Item-->
+                    <div class="card mx-6 mx-auto shadow p-3 mb-5" style="width: 100%;">
+                        <a href="#" class=" text-decoration-none">
+                            <img src="#" class="card-img-top" style="width: 100%; height: 100%;" />
+                            <div class="card-body my-auto">
+                                <p class="card-title link-dark">#นัมจุนอ่าน</p>
+                            </div>
+                        </a>
+                    </div>
+                    <!--Item-->
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" style="background-color: #e1e1e1; width: 5vh; height: 5vh; border-radius: 50%; top: 50%; transform: translateY(-50%);" type="button" data-bs-target="#carouselExampleRecommandControlSmallScreen" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" style="width: 1.5rem; height: 1.5rem;" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" style="background-color: #e1e1e1; width: 5vh; height: 5vh; border-radius: 50%; top: 50%; transform: translateY(-50%);" type="button" data-bs-target="#carouselExampleRecommandControlSmallScreen" data-bs-slide="next">
+                <span class="carousel-control-next-icon" style="width: 1.5rem; height: 1.5rem;" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <!--SliderForLG-->
+    </div>
+</div>
+<!--Recommand-->
+<!--Playlist-->
+<div class="container-fluid justify-content-center">
+    <h5 class="my-3 mx-3">รวมลิสต์หนังสือฮีลใจน่าอ่าน</h5>
+    <hr class="hr" />
+    <div class="container-fluid my-4">
+
+        <!--Slider-->
+        <div id="carouselExamplePL" class="carousel carousel-dark slide d-none d-md-block">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="card-wrapper d-flex">
+                        @if(ViewData["HealingBook"] != null){
+                            var healingbooks = ViewData["HealingBook"] as List<Book>;
+                            if(healingbooks != null && healingbooks.Any()){
+                                foreach(var hbookitem in healingbooks){
+                                    <!--Item-->
+                                    <div class="card px-1 py-1 shadow p-3 mb-5 bg-white mx-2" style="width: 15rem;">
+                                        <a asp-controller ="Bookctl" asp-action="Detail" asp-route-id="@hbookitem.BookId" class="mx-auto">
+                                            <img src="/img/@hbookitem.BookImgName" class="card-img-top mx-auto mt-3" style="width: 190px; height: 260px;">
+                                        </a>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col text-truncate">
+                                                    <a asp-controller="Bookctl" asp-action="Detail" asp-route-id="@hbookitem.BookId" class="card-title text-start  text-decoration-none text-dark">@hbookitem.BookName</a>
+                                                </div>
+                                                <div class="col text-end">
+                                                    <span class="text-end text-warning">
+                                                        4.9
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc107" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                @if(hbookitem.DiscountPer != null && hbookitem.BookPrice != null){
+                                                    <div class="col-xl-auto text-decoration-line-through text-danger">
+                                                        @{
+                                                            if(hbookitem.DiscountPer != null && hbookitem?.BookPrice != null)
+                                                            {
+                                                                float? discountedPrice = (hbookitem.BookPrice * 100) / (100 - hbookitem.DiscountPer);
+                                                                int? roundedPrice = (int?)Math.Round((decimal)discountedPrice, MidpointRounding.AwayFromZero);
+                                                                <span> @roundedPrice.00 บาท</span>
+                                                            }
+                                                        } 
+                                                    </div>
+                                                }
+                                                <div class="col">@hbookitem.BookPrice.00 บาท</div>
+                                                @* <div class=" col text-end">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="#1C5739" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                                                    </svg>
+                                                </div> *@
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Item-->
+                                }
+                            }
+                            else
+                            {
+                                <span> Can't Export</span>
+                            }
+                        }
+                        else
+                        {
+                            <span> No Content </span>
+                        }
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" style="background-color: #e1e1e1; width: 5vh; height: 5vh; border-radius: 50%; top: 50%; transform: translateY(-50%);" type="button" data-bs-target="#carouselExamplePL" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" style="width: 1.5rem; height: 1.5rem;" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" style="background-color: #e1e1e1; width: 5vh; height: 5vh; border-radius: 50%; top: 50%; transform: translateY(-50%);" type="button" data-bs-target="#carouselExamplePL" data-bs-slide="next">
+                <span class="carousel-control-next-icon" style="width: 1.5rem; height: 1.5rem;" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <!--Slider-->
+        <!--SliderForMD-->
+        <div id="carouselExamplePLControlSmallScreen" class="carousel slide carousel-dark slide d-md-none ">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="card-wrapper d-flex">
+                        <!--Item-->
+                        <div class="card px-1 py-1 shadow p-3 mb-5 bg-white mx-auto" style="width: 13rem;">
+                            <a href="#" class="mx-auto">
+                                <img src="https://storage.naiin.com/system/application/bookstore/resource/product/202301/570309/1000258264_front_XXXL.jpg?imgname=%E0%B8%81%E0%B8%B2%E0%B8%A5%E0%B8%84%E0%B8%A3%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%AB%E0%B8%99%E0%B8%B6%E0%B9%88%E0%B8%87...%E0%B8%96%E0%B8%B6%E0%B8%87%E0%B9%80%E0%B8%98%E0%B8%AD-(%E0%B8%9E%E0%B8%B4%E0%B8%A1%E0%B8%9E%E0%B9%8C%E0%B8%84%E0%B8%A3%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%97%E0%B8%B5%E0%B9%88-2)" class="card-img-top mx-auto mt-3 w-100" style=" height: 260px;">
+                            </a>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col text-truncate">
+                                        <a href="#" class="card-title text-start  text-decoration-none text-dark">ชื่อหนังสือ</a>
+                                    </div>
+                                    <div class="col text-end">
+                                        <span class="text-end text-warning">
+                                            4.9
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc107" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-auto text-decoration-line-through text-danger">199.00</div>
+                                    <div class="col">99.00.-</div>
+                                    <div class=" col text-end">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="#1C5739" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Item-->
+                        <!--Item-->
+                        <div class="card px-1 py-1 shadow p-3 mb-5 bg-white mx-auto" style="width: 13rem;">
+                            <a href="#" class="mx-auto">
+                                <img src="https://storage.naiin.com/system/application/bookstore/resource/product/202301/570309/1000258264_front_XXXL.jpg?imgname=%E0%B8%81%E0%B8%B2%E0%B8%A5%E0%B8%84%E0%B8%A3%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%AB%E0%B8%99%E0%B8%B6%E0%B9%88%E0%B8%87...%E0%B8%96%E0%B8%B6%E0%B8%87%E0%B9%80%E0%B8%98%E0%B8%AD-(%E0%B8%9E%E0%B8%B4%E0%B8%A1%E0%B8%9E%E0%B9%8C%E0%B8%84%E0%B8%A3%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%97%E0%B8%B5%E0%B9%88-2)" class="card-img-top mx-auto mt-3 w-100" style=" height: 260px;">
+                            </a>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col text-truncate">
+                                        <a href="#" class="card-title text-start  text-decoration-none text-dark">ชื่อหนังสือ</a>
+                                    </div>
+                                    <div class="col text-end">
+                                        <span class="text-end text-warning">
+                                            4.9
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc107" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-auto text-decoration-line-through text-danger">199.00</div>
+                                    <div class="col">99.00.-</div>
+                                    <div class=" col text-end">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="#1C5739" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Item-->
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card-wrapper d-flex">
+                        <!--Item-->
+                        <div class="card px-1 py-1 shadow p-3 mb-5 bg-white mx-auto" style="width: 13rem;">
+                            <a href="#" class="mx-auto">
+                                <img src="https://storage.naiin.com/system/application/bookstore/resource/product/202301/570309/1000258264_front_XXXL.jpg?imgname=%E0%B8%81%E0%B8%B2%E0%B8%A5%E0%B8%84%E0%B8%A3%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%AB%E0%B8%99%E0%B8%B6%E0%B9%88%E0%B8%87...%E0%B8%96%E0%B8%B6%E0%B8%87%E0%B9%80%E0%B8%98%E0%B8%AD-(%E0%B8%9E%E0%B8%B4%E0%B8%A1%E0%B8%9E%E0%B9%8C%E0%B8%84%E0%B8%A3%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%97%E0%B8%B5%E0%B9%88-2)" class="card-img-top mx-auto mt-3 w-100" style=" height: 260px;">
+                            </a>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col text-truncate">
+                                        <a href="#" class="card-title text-start  text-decoration-none text-dark">ชื่อหนังสือ</a>
+                                    </div>
+                                    <div class="col text-end">
+                                        <span class="text-end text-warning">
+                                            4.9
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc107" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-auto text-decoration-line-through text-danger">199.00</div>
+                                    <div class="col">99.00.-</div>
+                                    <div class=" col text-end">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="#1C5739" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Item-->
+                        <!--Item-->
+                        <div class="card px-1 py-1 shadow p-3 mb-5 bg-white mx-auto" style="width: 13rem;">
+                            <a href="#" class="mx-auto">
+                                <img src="https://storage.naiin.com/system/application/bookstore/resource/product/202301/570309/1000258264_front_XXXL.jpg?imgname=%E0%B8%81%E0%B8%B2%E0%B8%A5%E0%B8%84%E0%B8%A3%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%AB%E0%B8%99%E0%B8%B6%E0%B9%88%E0%B8%87...%E0%B8%96%E0%B8%B6%E0%B8%87%E0%B9%80%E0%B8%98%E0%B8%AD-(%E0%B8%9E%E0%B8%B4%E0%B8%A1%E0%B8%9E%E0%B9%8C%E0%B8%84%E0%B8%A3%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%97%E0%B8%B5%E0%B9%88-2)" class="card-img-top mx-auto mt-3 w-100" style=" height: 260px;">
+                            </a>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col text-truncate">
+                                        <a href="#" class="card-title text-start  text-decoration-none text-dark">ชื่อหนังสือ</a>
+                                    </div>
+                                    <div class="col text-end">
+                                        <span class="text-end text-warning">
+                                            4.9
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc107" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-auto text-decoration-line-through text-danger">199.00</div>
+                                    <div class="col">99.00.-</div>
+                                    <div class=" col text-end">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="#1C5739" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Item-->
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card-wrapper d-flex">
+                        <!--Item-->
+                        <div class="card px-1 py-1 shadow p-3 mb-5 bg-white mx-auto" style="width: 13rem;">
+                            <a href="#" class="mx-auto">
+                                <img src="https://storage.naiin.com/system/application/bookstore/resource/product/202301/570309/1000258264_front_XXXL.jpg?imgname=%E0%B8%81%E0%B8%B2%E0%B8%A5%E0%B8%84%E0%B8%A3%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%AB%E0%B8%99%E0%B8%B6%E0%B9%88%E0%B8%87...%E0%B8%96%E0%B8%B6%E0%B8%87%E0%B9%80%E0%B8%98%E0%B8%AD-(%E0%B8%9E%E0%B8%B4%E0%B8%A1%E0%B8%9E%E0%B9%8C%E0%B8%84%E0%B8%A3%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%97%E0%B8%B5%E0%B9%88-2)" class="card-img-top mx-auto mt-3 w-100" style=" height: 260px;">
+                            </a>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col text-truncate">
+                                        <a href="#" class="card-title text-start  text-decoration-none text-dark">ชื่อหนังสือ</a>
+                                    </div>
+                                    <div class="col text-end">
+                                        <span class="text-end text-warning">
+                                            4.9
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc107" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-auto text-decoration-line-through text-danger">199.00</div>
+                                    <div class="col">99.00.-</div>
+                                    <div class=" col text-end">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="#1C5739" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Item-->
+                        <!--Item-->
+                        <div class="card px-1 py-1 shadow p-3 mb-5 bg-white mx-auto" style="width: 13rem;">
+                            <a href="#" class="mx-auto">
+                                <img src="https://storage.naiin.com/system/application/bookstore/resource/product/202301/570309/1000258264_front_XXXL.jpg?imgname=%E0%B8%81%E0%B8%B2%E0%B8%A5%E0%B8%84%E0%B8%A3%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%AB%E0%B8%99%E0%B8%B6%E0%B9%88%E0%B8%87...%E0%B8%96%E0%B8%B6%E0%B8%87%E0%B9%80%E0%B8%98%E0%B8%AD-(%E0%B8%9E%E0%B8%B4%E0%B8%A1%E0%B8%9E%E0%B9%8C%E0%B8%84%E0%B8%A3%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%97%E0%B8%B5%E0%B9%88-2)" class="card-img-top mx-auto mt-3 w-100" style=" height: 260px;">
+                            </a>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col text-truncate">
+                                        <a href="#" class="card-title text-start  text-decoration-none text-dark">ชื่อหนังสือ</a>
+                                    </div>
+                                    <div class="col text-end">
+                                        <span class="text-end text-warning">
+                                            4.9
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc107" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-auto text-decoration-line-through text-danger">199.00</div>
+                                    <div class="col">99.00.-</div>
+                                    <div class=" col text-end">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="#1C5739" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Item-->
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card-wrapper d-flex">
+                        <!--Item-->
+                        <div class="card px-1 py-1 shadow p-3 mb-5 bg-white mx-auto" style="width: 13rem;">
+                            <a href="#" class="mx-auto">
+                                <img src="https://storage.naiin.com/system/application/bookstore/resource/product/202301/570309/1000258264_front_XXXL.jpg?imgname=%E0%B8%81%E0%B8%B2%E0%B8%A5%E0%B8%84%E0%B8%A3%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%AB%E0%B8%99%E0%B8%B6%E0%B9%88%E0%B8%87...%E0%B8%96%E0%B8%B6%E0%B8%87%E0%B9%80%E0%B8%98%E0%B8%AD-(%E0%B8%9E%E0%B8%B4%E0%B8%A1%E0%B8%9E%E0%B9%8C%E0%B8%84%E0%B8%A3%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%97%E0%B8%B5%E0%B9%88-2)" class="card-img-top mx-auto mt-3 w-100" style=" height: 260px;">
+                            </a>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col text-truncate">
+                                        <a href="#" class="card-title text-start  text-decoration-none text-dark">ชื่อหนังสือ</a>
+                                    </div>
+                                    <div class="col text-end">
+                                        <span class="text-end text-warning">
+                                            4.9
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc107" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-auto text-decoration-line-through text-danger">199.00</div>
+                                    <div class="col">99.00.-</div>
+                                    <div class=" col text-end">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="#1C5739" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Item-->
+                        <!--Item-->
+                        <div class="card px-1 py-1 shadow p-3 mb-5 bg-white mx-auto" style="width: 13rem;">
+                            <a href="#" class="mx-auto">
+                                <img src="https://storage.naiin.com/system/application/bookstore/resource/product/202301/570309/1000258264_front_XXXL.jpg?imgname=%E0%B8%81%E0%B8%B2%E0%B8%A5%E0%B8%84%E0%B8%A3%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%AB%E0%B8%99%E0%B8%B6%E0%B9%88%E0%B8%87...%E0%B8%96%E0%B8%B6%E0%B8%87%E0%B9%80%E0%B8%98%E0%B8%AD-(%E0%B8%9E%E0%B8%B4%E0%B8%A1%E0%B8%9E%E0%B9%8C%E0%B8%84%E0%B8%A3%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%97%E0%B8%B5%E0%B9%88-2)" class="card-img-top mx-auto mt-3 w-100" style=" height: 260px;">
+                            </a>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col text-truncate">
+                                        <a href="#" class="card-title text-start  text-decoration-none text-dark">ชื่อหนังสือ</a>
+                                    </div>
+                                    <div class="col text-end">
+                                        <span class="text-end text-warning">
+                                            4.9
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc107" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-auto text-decoration-line-through text-danger">199.00</div>
+                                    <div class="col">99.00.-</div>
+                                    <div class=" col text-end">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="#1C5739" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Item-->
+                    </div>
+                </div>
+
+            </div>
+            <button class="carousel-control-prev" style="background-color: #e1e1e1; width: 5vh; height: 5vh; border-radius: 50%; top: 50%; transform: translateY(-50%);" type="button" data-bs-target="#carouselExamplePLControlSmallScreen" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" style="width: 1.5rem; height: 1.5rem;" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" style="background-color: #e1e1e1; width: 5vh; height: 5vh; border-radius: 50%; top: 50%; transform: translateY(-50%);" type="button" data-bs-target="#carouselExamplePLControlSmallScreen" data-bs-slide="next">
+                <span class="carousel-control-next-icon" style="width: 1.5rem; height: 1.5rem;" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <!--SliderForMD-->
+    </div>
+</div>
+<!--Playlist-->
+<!--review-->
+<div class="container-fluid justify-content-center my-4">
+    <h5 class="my-3 mx-3">รีวิวหนังสือน่าอ่าน</h5>
+    <hr class="hr" />
+    <div class="container-fluid my-4">
+
+        <!--Slider-->
+        <div id="carouselExampleReview" class="carousel carousel-dark slide d-none d-lg-block">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="card-wrapper d-flex">
+                        <!--Item-->
+                        <div class="card mx-6 mx-auto shadow p-3 mb-5" style=" width: 40rem; background-color:#ECECEC;">
+                            <div class="container m-4 mx-auto">
+                                <div class="row justify-content-center">
+                                    <div class="col-6 col-lg-5">
+                                        <a href="#">
+                                            <img src="/img/Nanake.jpg" class="card-img" style="width: 190px; height: 260px;">
+                                        </a>
+                                    </div>
+                                    <div class="col-4 col-lg-7 m-auto p-1 ">
+                                        <div class="text-start fs-4 fw-bold">โชคดีที่มึงได้อ่าน</div>
+                                        <div class="p-4 text-center">
+                                            “เป็นหนังสือที่อ่านง่าย ได้หลากหลายแง่มุม ช่วยเปิดโลกให้กับคุณผู้อ่านอย่างแท้จริง”
+                                        </div>
+                                        <div class="text-end">นายเน็ก ครับน้า</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Item-->
+                        <!--Item-->
+                        <div class="card mx-6 mx-auto shadow p-3 mb-5" style=" width: 40rem; background-color:#ECECEC;">
+                            <div class="container m-4 mx-auto">
+                                <div class="row justify-content-center">
+                                    <div class="col-6 col-lg-5">
+                                        <a href="#">
+                                            <img src="/img/Money Summary.jpg" class="card-img" style="width: 190px; height: 260px;">
+                                        </a>
+                                    </div>
+                                    <div class="col-4 col-lg-7 m-auto p-1 ">
+                                        <div class="text-start fs-4 fw-bold">Money Summary</div>
+                                        <div class="p-4 text-center">
+                                            “เป็นหนังสือที่สรุปเรื่องราวการเงินแบบเข้าใจง่าย เหมาะสำหรับผู้เริ่มต้นมากๆ”
+                                        </div>
+                                        <div class="text-end">นายพิชิต กองเงิน</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Item-->
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="card-wrapper d-flex">
+                        <!--Item-->
+                        <div class="card mx-6 mx-auto shadow p-3 mb-5" style=" width: 40rem; background-color:#ECECEC;">
+                            <div class="container m-4 mx-auto">
+                                <div class="row justify-content-center">
+                                    <div class="col-6 col-lg-5">
+                                        <a href="#">
+                                            <img src="/img/มุมมองพระเจ้า.jpg" class="card-img" style="width: 190px; height: 260px;">
+                                        </a>
+                                    </div>
+                                    <div class="col-4 col-lg-7 m-auto p-1 ">
+                                        <div class="text-start fs-4 fw-bold">
+                                            มุมมองนักอ่านพระเจ้า
+                                        </div>
+                                        <div class="p-4 text-center">
+                                            “นิยายแฟนตาซีแนวรู้อนาคต แต่ไม่ได้หมายความว่าอนาคตเป็นแบบไหนมันจะเป็นแบบนั้นเสมอ เน้นแก้ไขสถานการณ์ เหมาะกับสายแฟนตาซีตัวยง”
+                                        </div>
+                                        <div class="text-end">นายก็อด รีดเด้อร์</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Item-->
+                        <!--Item-->
+                        <div class="card mx-6 mx-auto shadow p-3 mb-5" style=" width: 40rem; background-color:#ECECEC;">
+                            <div class="container m-4 mx-auto">
+                                <div class="row justify-content-center">
+                                    <div class="col-6 col-lg-5">
+                                        <a href="#">
+                                            <img src="/img/4000Week.jpg" class="card-img" style="width: 190px; height: 260px;">
+                                        </a>
+                                    </div>
+                                    <div class="col-4 col-lg-7 m-auto p-1 ">
+                                        <div class="text-start fs-4 fw-bold">ชีวิตเรามีแค่สี่พันสัปดาห์</div>
+                                        <div class="p-4 text-center">
+                                            “หนังสือเล่มนี้ทำให้เราเปลี่ยนทัศนคติที่เรามีต่อเวลา สิ่งที่สำคัญคือเราจะต้อง "เลือก" ทำในสิ่งที่สำคัญหรือมีคุณค่าไม่กี่อย่างแล้วลงมือทำมัน 
+                                            แถมยังแอบแถมเทคนิคที่คุณเอาไปปรับใช้ได้ ขอให้เอ็นจอยกับชีวิต ชีวิตปัจจุบันเป็นของคุณ”
+                                        </div>
+                                        <div class="text-end">นายเวฬา จำกิต</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Item-->
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" style="background-color: #e1e1e1; width: 5vh; height: 5vh; border-radius: 50%; top: 50%; transform: translateY(-50%);" type="button" data-bs-target="#carouselExampleReview" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" style="width: 1.5rem; height: 1.5rem;" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" style="background-color: #e1e1e1; width: 5vh; height: 5vh; border-radius: 50%; top: 50%; transform: translateY(-50%);" type="button" data-bs-target="#carouselExampleReview" data-bs-slide="next">
+                <span class="carousel-control-next-icon" style="width: 1.5rem; height: 1.5rem;" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <!--Slider-->
+        <!--SliderForLG-->
+        <div id="carouselExampleReviewControlSmallScreen" class="carousel slide carousel-dark slide d-lg-none">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <!--Item-->
+                    <div class="card mx-6 mx-auto" style=" width: 18rem; background-color:#ECECEC;">
+                        <a href="#" class="mx-auto">
+                            <img src="#" class="card-img-top mx-auto mt-3" style="width: 190px; height: 260px;">
+                        </a>
+                        <div class="my-4 mx-3">
+                            <div class="text-start">ชื่อหนังสือ</div>
+                            <div class="p-4 text-center">
+                                “หนังสือสอนทำอาหารเล่มนี้ดีมาก อ่านแล้วอยากถือมีดไปเซเว่นเลย”
+                            </div>
+                            <div class="text-end">นายนัว ครัวพัง</div>
+                        </div>
+
+                    </div>
+                    <!--Item-->
+                </div>
+                <div class="carousel-item">
+                    <!--Item-->
+                    <div class="card mx-6 mx-auto" style=" width: 18rem; background-color:#ECECEC;">
+                        <a href="#" class="mx-auto">
+                            <img src="#" class="card-img-top mx-auto mt-3" style="width: 190px; height: 260px;">
+                        </a>
+                        <div class="my-4 mx-3">
+                            <div class="text-start">ชื่อหนังสือ</div>
+                            <div class="p-4 text-center">
+                                “หนังสือสอนทำอาหารเล่มนี้ดีมาก อ่านแล้วอยากถือมีดไปเซเว่นเลย”
+                            </div>
+                            <div class="text-end">นายนัว ครัวพัง</div>
+                        </div>
+
+                    </div>
+                    <!--Item-->
+                </div>
+                <div class="carousel-item">
+                    <!--Item-->
+                    <div class="card mx-6 mx-auto" style=" width: 18rem; background-color:#ECECEC;">
+                        <a href="#" class="mx-auto">
+                            <img src="#" class="card-img-top mx-auto mt-3" style="width: 190px; height: 260px;">
+                        </a>
+                        <div class="my-4 mx-3">
+                            <div class="text-start">ชื่อหนังสือ</div>
+                            <div class="p-4 text-center">
+                                “หนังสือสอนทำอาหารเล่มนี้ดีมาก อ่านแล้วอยากถือมีดไปเซเว่นเลย”
+                            </div>
+                            <div class="text-end">นายนัว ครัวพัง</div>
+                        </div>
+
+                    </div>
+                    <!--Item-->
+                </div>
+                <div class="carousel-item">
+                    <!--Item-->
+                    <div class="card mx-6 mx-auto" style=" width: 18rem; background-color:#ECECEC;">
+                        <a href="#" class="mx-auto">
+                            <img src="#" class="card-img-top mx-auto mt-3" style="width: 190px; height: 260px;">
+                        </a>
+                        <div class="my-4 mx-3">
+                            <div class="text-start">ชื่อหนังสือ</div>
+                            <div class="p-4 text-center">
+                                “หนังสือสอนทำอาหารเล่มนี้ดีมาก อ่านแล้วอยากถือมีดไปเซเว่นเลย”
+                            </div>
+                            <div class="text-end">นายนัว ครัวพัง</div>
+                        </div>
+
+                    </div>
+                    <!--Item-->
+                </div>
+
+            </div>
+            <button class="carousel-control-prev" style="background-color: #e1e1e1; width: 5vh; height: 5vh; border-radius: 50%; top: 50%; transform: translateY(-50%);" type="button" data-bs-target="#carouselExampleReviewControlSmallScreen" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" style="width: 1.5rem; height: 1.5rem;" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" style="background-color: #e1e1e1; width: 5vh; height: 5vh; border-radius: 50%; top: 50%; transform: translateY(-50%);" type="button" data-bs-target="#carouselExampleReviewControlSmallScreen" data-bs-slide="next">
+                <span class="carousel-control-next-icon" style="width: 1.5rem; height: 1.5rem;" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <!--SliderForLG-->
+    </div>
+</div>
+<!--review-->

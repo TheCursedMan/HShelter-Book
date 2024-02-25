@@ -1,0 +1,46 @@
+﻿@model News;
+@{
+    ViewData["title"] = "Add Book";
+}
+<h1 class="text-center">Add Book</h1>​
+
+<form method="post" asp-controller="Newsctl" asp-action="Create" enctype="multipart/form-data">​
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">​
+
+        <label asp-for="NewsName"></label>​
+
+        <input type="Text" asp-for="NewsName" class="form-control"/>​
+        <span asp-validation-for="NewsName" class="text-danger"></span>
+    </div>​
+
+     <div class="form-group">
+        <label asp-for="NewsDescription"></label>
+        <textarea asp-for="NewsDescription" class="form-control"></textarea>
+        <span asp-validation-for="NewsDescription" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">​
+
+        <label asp-for="NewsDate"></label>​
+
+        <input type="date" asp-for="NewsDate" class="form-control"/>​
+        <span asp-validation-for="NewsDate" class="text-danger"></span>
+    </div>
+
+     <div class="form-group">​
+
+        <label asp-for="NewsImg "></label>​
+
+        <input asp-for="NewsImg" class="form-control" accept="image/*">​
+
+        <span asp-validation-for="NewsImg" class="text-danger"></span>
+    </div>​
+​
+
+    <br />​
+
+    <button type="submit" class="btn btn-primary">Save</button>​
+     <a asp-action="Index">Back to List</a>
+
+</form>​

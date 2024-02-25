@@ -1,0 +1,39 @@
+﻿@model IEnumerable<UserAddress>
+
+<!DOCTYPE html>
+
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Prompt' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="site.css">
+</head>
+
+<h2 class="my-4">ที่อยู่</h2>
+    <div class="row text-start py-3 mx-4 border-top border-bottom w-100">
+        <div class="col">ชื่อ-นามสกุล</div>
+        <div class="col">ที่อยู่</div>
+        <div class="col">รหัสไปรษณีย์</div>
+        <div class="col">เบอร์โทรศัพท์</div>
+        <div class="col-4 col-sm-1"></div>
+        <div class="col-4 col-sm-1"></div>
+    </div>
+@foreach(var item in Model)
+{
+    <div class="row text-start my-3 mx-4 mb-4 w-100">
+        <div class="col">@item.CustomerName</div>
+        <div class="col">@item.Address</div>
+        <div class="col">@item.PostalCode</div>
+        <div class="col">@item.PhoneNumber</div>
+        <div class="col-4 col-sm-1 mt-sm-0 mt-3 ">
+            <a asp-controller="Addressctl" asp-action="Edit" asp-route-id="@item.AddressId" class="text-secondary">แก้ไข</a>
+        </div>
+        <div class="col-4 col-sm-1 mt-sm-0 mt-3 ">
+            <a asp-controller="Addressctl" asp-action="Delete" asp-route-id="@item.AddressId" class="text-secondary">ลบ</a>
+        </div>
+
+    </div>
+}
+    <div class="d-flex justify-content-end me-5 me-sm-0">
+        <a asp-action="Create" class="btn btn-success rounded-pill py-2 px-4">+ เพิ่มที่อยู่ใหม่</a>
+    </div>

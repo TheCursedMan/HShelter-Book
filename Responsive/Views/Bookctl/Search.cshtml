@@ -1,0 +1,286 @@
+﻿@model IEnumerable<Book>
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Prompt' rel='stylesheet'>
+    <style>
+        * {
+            font-family: prompt;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: white;
+            border-color: rgba(130, 161, 124, 50);
+        }
+
+            .pagination .page-item.active .page-link:hover {
+                background-color: #82A17C;
+                border-color: #D7F0B8;
+                color: #fff;
+            }
+    </style>
+</head>
+<body>
+    @if ((int?)ViewData["typeId"] == 1)
+    {
+        <div class="container-xxl fs-2 fw-bold text-center my-4"> นิยาย/มังงะ </div>
+    }
+    else if ((int?)ViewData["typeId"] == 2)
+    {
+        <div class="container-xxl fs-2 fw-bold text-center my-4"> หนังสือเรียน </div>
+    }
+    else if ((int?)ViewData["typeId"] == 3)
+    {
+        <div class="container-xxl fs-2 fw-bold text-center my-4"> ปรัชญา </div>
+    }
+    <div class="container-xxl justify-content-centert text-center my-3">
+        @* Top Pagination *@
+        <nav>
+            <ul class="pagination pagination-lg justify-content-center">
+                <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                    <a href="?page=@(ViewBag.CurrentPage - 1)" class="page-link text-success"> < </a>
+                </li>
+
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                        <a href="?page=@i" class="page-link text-success">หน้าที่ @i</a>
+                    </li>
+                }
+
+                <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                    <a href="?page=@(ViewBag.CurrentPage + 1)" class="page-link text-success"> > </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    @*filter md size*@
+    @*   <div class="container-fluid d-block d-sm-block d-md-block d-lg-none bg-success my-2">
+    <div class="w-25 bg-warning ">
+    Filter
+    </div>
+    </div> *@
+    @* content *@
+    <div class="container-fluid px-4 w-100 justify-content-center text-center">
+        <div class="row gx-5 position-relative">
+            <div class="d-flex justify-content-center mt-3 ">
+                <button class="btn badge rounded-pill bg-success text-white fw-bold p-2 w-25 d-block d-sm-block d-md-block d-lg-none" style="min-width:150px;" data-bs-target="#filtersetting" data-bs-toggle="modal">
+                    <i class="fa-solid fa-filter fa-2xl" style="color: #ffffff;"></i>
+                    Filter
+                </button>
+            </div>
+
+            @*filter setting*@
+            <div class="modal" id="filtersetting">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <p class="modal-title"> Filter</p>
+                        </div>
+                        <div class="modal-body">
+                            <div class="btn-group d-block">
+                                @*Small Screen Filter *@
+                                @if (ViewData["Categories"] != null)
+                                {
+                                    var categories = ViewData["Categories"] as List<BookCategory>;
+                                    if (categories != null && categories.Any())
+                                    {
+                                        <form id="filterForm">
+                                            @foreach (var categoryitem in categories)
+                                            {
+                                                <div class="d-flex w-100 justify-content-center">
+                                                    <input type="checkbox" class="btn-check d-block my-3 w-50 categoryCheckbox" name="Category" Value="@categoryitem.CategoryId" id="sCat-@categoryitem.CategoryId" />
+                                                    <label class="btn btn-outline-success d-block my-3 w-50" for="sCat-@categoryitem.CategoryId"> @categoryitem.CategoryName </label>
+                                                </div>
+
+                                            }
+                                        </form>
+
+                                    }
+                                }
+
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-dark"> ยกเลิก </button>
+                            <button class="btn btn-success"> ยืนยัน </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @* filter area *@
+            <div class="col-xxl-3 col-lg-4 col-md-0 d-none d-lg-block" style="height:auto">
+                <div class="p-3 " style="height:auto">
+                    @* checkbox *@
+                    <div class="fs-3 fw-light my-3"> ตัวกรอง </div>
+                    <div class="btn-group d-block" role="group">
+                        @if (ViewData["Categories"] != null)
+                        {
+                            var categories = ViewData["Categories"] as List<BookCategory>;
+                            <form id="filterForm">
+                                @if (categories != null && categories.Any())
+                                {
+                                    @foreach (var categoryitem in categories)
+                                    {
+                                        <div class="d-flex w-100 justify-content-center">
+                                            <input type="checkbox" class="btn-check d-block my-3 w-50 categoryCheckbox" name="Category" Value="@categoryitem.CategoryId" id="Cat-@categoryitem.CategoryId" />
+                                            <label class="btn btn-outline-success d-block my-3 w-50" for="Cat-@categoryitem.CategoryId"> @categoryitem.CategoryName </label>
+                                        </div>
+                                    }
+                                }
+                            </form>
+                        }
+
+                    </div>
+                </div>
+            </div>
+
+            @*catagory area*@
+            <div class="col-xxl-9 col-lg-8 col-md-12 gx-1" style="height:auto" id="">
+                <div class="p-3 " style="height:auto">
+                    <div class="container text-center">
+                        @*row1*@
+                        <div class="row my-4 d-flex justify-content-xl-start" id="FilterShow">
+                            @if (TempData["FilteredBooks"] == null)
+                            {
+                                @foreach (var item in Model)
+                                {
+                                    <div class="col-xxl-3 col-lg-6 col-md-6 col-12 position-relative card px-1 py-1 mx-3 mx-xl-2 p-3 mb-5 bg-white" style="width: 15rem;">
+                                        <a class="mx-auto">
+                                            <a asp-controller="Bookctl" asp-action="Detail" asp-route-id="@item.BookId"><img src="~/img/@item.BookImgName" class="card-img-top  mt-3" style="width: 190px; height: 260px;"></a>
+                                        </a>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-8 text-start text-truncate" style="padding-left:1.25rem;">
+                                                    <a asp-controller="Bookctl" asp-action="Detail" asp-route-id="@item.BookId" class="card-title text-start  text-decoration-none text-dark"> @item.BookName </a>
+                                                </div>
+                                                <div class="col-4 text-end">
+                                                    <span class="text-end text-warning">
+                                                        4.9
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ffc107" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="d-flex flex-row">
+                                                    <span class="col-4 text-decoration-line-through text-danger">335.00</span>
+                                                    <span class="col-4 text-start">@item.BookPrice.-</span>
+                                                    <div class="col-4 text-end">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="#1C5739" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                                            <a onclick="addToCart(@item.BookId)" style="cursor: pointer;"> <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" /></a>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* bottom Pagination *@
+    <nav>
+        <ul class="pagination pagination-lg justify-content-center">
+            <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                <a href="?page=@(ViewBag.CurrentPage - 1)" class="page-link text-success"> < </a>
+            </li>
+
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                    <a href="?page=@i" class="page-link text-success">หน้าที่ @i</a>
+                </li>
+            }
+
+            <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                <a href="?page=@(ViewBag.CurrentPage + 1)" class="page-link text-success"> > </a>
+            </li>
+        </ul>
+    </nav>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Variable to store the previous content
+            var previousContent;
+
+            // Function to handle filtering based on selected categories
+            function handleCategoryFiltering() {
+                var selectedCategories = [];
+
+                // Loop through checked checkboxes and push their values to the array
+                $('.categoryCheckbox:checked').each(function () {
+                    selectedCategories.push($(this).val());
+                });
+
+                if (selectedCategories.length === 0) {
+                    // If no checkboxes are selected, show the previous content
+                    $('#FilterShow').html(previousContent);
+                    return;
+                }
+
+                // Make an AJAX POST request to the Filter action with selected category IDs
+                $.ajax({
+                    url: '@Url.Action("Filter", "Bookctl")',
+                    type: 'POST',
+                    data: { filterId: selectedCategories },
+                    success: function (result) {
+                        // Store the current content as previous content
+                        previousContent = $('#FilterShow').html();
+                        $('#FilterShow').html(result);
+                    },
+                    error: function (error) {
+                        console.log('Error:', error);
+                    }
+                });
+            }
+
+            // Handler for category checkboxes on change event
+            $('.categoryCheckbox').on('change', function () {
+                handleCategoryFiltering(); // Call the filtering function when checkboxes change
+            });
+
+            // Uncheck all category checkboxes when the page loads
+            $('.categoryCheckbox').prop('checked', false);
+
+            // Optionally, you can call the filtering function here if you want to perform default filtering on page load
+            // handleCategoryFiltering();
+        });
+
+
+
+
+    </script>
+
+    <script>
+        function addToCart(bookId) {
+            // Make an AJAX request to the server
+            fetch(`/Cartctl/AddToCart?bookId=${bookId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ bookId: bookId })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Book added to cart!');
+                        // Optionally, perform any UI update indicating the book was added to the cart
+                        // For example, display a message or update the UI dynamically
+                    } else {
+                        console.error('Failed to add book to cart');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</body>

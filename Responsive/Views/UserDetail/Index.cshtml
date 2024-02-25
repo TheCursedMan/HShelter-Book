@@ -1,0 +1,108 @@
+﻿@model Responsive.Models.Account
+<!DOCTYPE html>
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Prompt' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/Tew.css">
+</head>
+
+<style>
+
+    .form-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0px;
+    }
+
+        .form-group label {
+            margin-right: 10px;
+        }
+
+        .form-group input {
+            flex: 1;
+            border: none;
+            background-color: transparent !important;
+            box-shadow: none;
+        }
+
+            .form-group input::placeholder {
+                color: black;
+            }
+
+    .text-account-down {
+        margin-top: 40px !important;
+        margin-bottom: 5px !important;
+    }
+
+</style>
+
+
+<body>
+    <div class="container">
+        <h1 class="text-center text-account-down">บัญชีของฉัน </h1>
+        <br />
+        <br />
+        <div class="row">
+
+            <div class="col-sm-12 col-xl-3 mt-xl-5 mt-sm-2 text-center mb-xl-0 mb-4">
+
+                <div class="profile-picture align-items-center">
+                    <div class="picture-frame">
+                        <div class="profile-circle" style="overflow:hidden;">
+                            <img src="~/img/@Model.CustomerImgName" class="w-100 h-100" style="object-fit:cover">
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-xl-8">
+                <br />
+                <div class="info-text d-flex justify-content-between align-items-center">
+                    <h1>ข้อมูลส่วนตัว</h1>
+                    <a asp-controller="UserDetail" asp-action="Edit" asp-route-id="@Model.Id" class="link-black fs-4">แก้ไขข้อมูลส่วนตัว</a>
+                </div>
+                <hr class="hrs" />
+                <br />
+                <div class="row">
+                    <div class="form-group col-md">
+                        <label asp-for="CustomerName">ชื่อ</label>
+                        <input asp-for="CustomerName" class="form-control" aria-label="ชื่อ" readonly placeholder="" />
+                    </div>
+
+                    <div class="form-group col-xl-8 mt-xl-0 col-sm-12 mt-sm-4 mt-4">
+                        <label asp-for="CustomerSurname">นามสกุล</label>
+                        <input asp-for="CustomerSurname" class="form-control" aria-label="นามสกุล" readonly placeholder="" />
+                    </div>
+                </div>
+                <br />
+
+                <div class="form-group col-md">
+                    <label asp-for="Email">อีเมล</label>
+                    <input asp-for="Email" class="form-control" aria-label="อีเมล" readonly placeholder="" />
+                </div>
+                <br />
+
+                <div class="form-group col-md">
+                    <label asp-for="BirthDate">วัน/เดือน/ปีเกิด</label>
+                    <input asp-for="BirthDate" id="birthdates" class="form-control" type="text" label="วัน" aria-label="วัน/เดือน/ปีเกิด" readonly placeholder="" />
+                </div>
+                <br />
+
+                <div class="form-group col-md">
+                    <label asp-for="Gender">เพศ</label>
+                    <input asp-for="Gender" class="form-control" aria-label="เพศ" readonly placeholder="" />
+                </div>
+                <br />
+
+                <div class="form-group col-md">
+                    <label asp-for="PhoneNumber">เบอร์โทรศัพท์</label>
+                    <input asp-for="PhoneNumber" class="form-control" type="text" aria-label="เบอร์โทรศัพท์" readonly placeholder="" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>

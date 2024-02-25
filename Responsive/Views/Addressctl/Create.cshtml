@@ -1,0 +1,42 @@
+﻿@model UserAddress
+<head>
+    <style>
+        *{
+            font-family: prompt;
+        }
+    </style>
+</head>
+@if(ViewData["AddressError"]?.ToString() != null)
+{
+    <div class="alert alert-danger">
+        @ViewData["AddressError"]?.ToString()
+    </div>
+    
+}
+
+<h2> Add new address</h2>
+
+<form asp-controller="Addressctl" asp-action="Create" method="post">
+
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+    <label asp-for="CustomerName" class=""></label>
+    <input asp-for="CustomerName" class="form-control" />
+    <span asp-validation-for="CustomerName" class="text-danger"></span>
+
+    <label asp-for="Address" class=""></label>
+    <input asp-for="Address" class="form-control" />
+    <span asp-validation-for="Address" class="text-danger"></span>
+
+    <label asp-for="PostalCode" class=""></label>
+    <input asp-for="PostalCode" class="form-control" pattern="\d{5}" />
+    <span asp-validation-for="PostalCode" class="text-danger"></span>
+
+    <label asp-for="PhoneNumber" class=""></label>
+    <input asp-for="PhoneNumber" class="form-control" pattern="\d{10}" type="tel" />
+    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+    <button type="submit" class="btn btn-success"> เพิ่มที่อยู่ </button>
+
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

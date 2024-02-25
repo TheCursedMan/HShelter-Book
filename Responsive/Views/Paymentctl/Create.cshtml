@@ -1,0 +1,43 @@
+﻿@model Payment
+
+@{
+    ViewData["Title"] = "Add Payment";
+}
+
+<h1>Add Payment</h1>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="PaymentType">Bank Name:</label>
+        <select class="form-select" aria-label="Payment Types" asp-for="PaymentType">
+            <option selected>Payment Types</option>
+            <option value="ธนาคารกรุงเทพ">ธนาคารกรุงเทพ</option>
+            <option value="ธนาคารกสิกรไทย">ธนาคารกสิกรไทย</option>
+            <option value="ธนาคารกรุงไทย">ธนาคารกรุงไทย</option>
+            <option value="ธนาคารไทยพาณิชย์">ธนาคารไทยพาณิชย์</option>
+            <option value="ธนาคารออมสิน">ธนาคารออมสิน</option>ฃ
+            <option value="บัตรเดบิต/เครดิต">บัตรเดบิต/เครดิต</option>
+        </select>
+        <span asp-validation-for="PaymentType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="HolderName">Holder Name:</label>
+        <input type="text" class="form-control" asp-for="HolderName" />
+        <span asp-validation-for="HolderName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="PaymentNumber">Payment Number:</label>
+        <input type="text" class="form-control" asp-for="PaymentNumber" />
+        <span asp-validation-for="PaymentNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="PhoneNumber">Phone Number:</label>
+        <input type="tel" class="form-control" asp-for="PhoneNumber" pattern="\d{10}"/>
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

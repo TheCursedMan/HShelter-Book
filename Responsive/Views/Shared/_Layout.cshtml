@@ -1,0 +1,244 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+@* <head>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="site.css">
+</head>
+ *@ 
+<head> 
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Responsive</title>
+    <link href='https://fonts.googleapis.com/css?family=Prompt' rel='stylesheet'>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/Popup.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Responsive.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark p-3" style="background-color:#395748;">
+            <!-- Content -->
+            <div class="container-fluid">
+                <!-- Brand -->
+                <a href="#" class="navbar-brand fw-bold fs-2 float-start"><img src="/img/Healing_Shelter_1.png" class="img" width="200" height="50" style="object-fit:cover; overflow:visible;"/></a>
+                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#hbg">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Menu -->
+                <div class="collapse navbar-collapse justify-content-center" id="hbg">
+                    <ul class="navbar-nav">
+                        <li class="nav-item mx-4">
+                            <a asp-controller="Home" asp-action="Index" class="nav-link fs-4 tewfont">หน้าแรก</a>
+                        </li>
+                        <li class="nav-item dropdown mx-4">
+                            <a asp-controller="Bookctl" asp-action="Index" class="nav-link dropdown-toggle fs-4 tewfont" data-bs-toggle="dropdown">
+                                หมวดหมู่
+                            </a>
+                            <div class="dropdown-menu " aria-labelledby="navbarDropdown" style="background-color:#395748;">
+                                <a asp-controller="Bookctl" asp-action="Index" asp-route-typeId="1" class="dropdown-item text-white tewfont">นิยาย/มังงะ</a>
+                                <a asp-controller="Bookctl" asp-action="Index" asp-route-typeId="2" class="dropdown-item text-white tewfont">หนังสือเรียน</a>
+                                <a asp-controller="Bookctl" asp-action="Index" asp-route-typeId="3" class="dropdown-item text-white tewfont">ปรัชญา</a>
+                            </div>
+                        </li>
+                        <li class="nav-item mx-4">
+                            <a asp-controller="Newsctl" asp-action="Index" class="nav-link fs-4 tewfont">ข่าวสาร</a>
+                        </li>
+                        <li class="nav-item mx-4 d-lg-none">
+                            <a asp-controller="Cartctl" asp-action="Index" class="nav-link fs-4">ตะกร้า</a>
+                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item mx-4 d-lg-none">
+                                <div class="dropdown">
+                                    <a class="btn btn-success dropdown-toggle w-100 text-start text-white-50" style="background-color:#395748" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        บัญชี
+                                    </a>
+
+                                    <ul class="dropdown-menu" style="background-color:#395748">
+                                        <a asp-controller="UserDetail" asp-action="Index" class="dropdown-item text-white my-2" style="background-color:#395748"> รายละเอียดบัญชี </a>
+                                        <a asp-controller="Orderctl" asp-action="Index" class="dropdown-item text-white my-2" style="background-color:#395748"> รายการสั่งซื้อ </a>
+                                        <a asp-controller="Addressctl" asp-action="Index" class="dropdown-item text-white my-2" style="background-color:#395748"> ที่อยู่ </a>
+                                        <a asp-controller="Paymentctl" asp-action="Index" class="dropdown-item text-white my-2" style="background-color:#395748"> ช่องทางการชำระเงิน </a>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <a asp-controller="Bookctl" asp-action="List" class="dropdown-item text-white my-2" style="background-color:#395748"> ปรับแต่งหนังสือ </a>
+                                            <a asp-controller="Eventctl" asp-action="List" class="dropdown-item text-white my-2" style="background-color:#395748"> ปรับแต่งหน้า Event </a>
+                                            <a asp-controller="Newsctl" asp-action="List" class="dropdown-item text-white my-2" style="background-color:#395748"> ปรับแต่งหน้าข่าว </a>
+                                        }
+                                        <a asp-controller="Accountctl" asp-action="logout" class="dropdown-item text-white text-decoration-underline my-2" style="background-color:#395748"> Logout </a>
+                                    </ul>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item mx-4 d-lg-none">
+                                <a asp-controller="Accountctl" asp-action="Login" class="btn text-white" style="background-color:#4B9F3B">Login/Register</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="d-none d-lg-inline-block">
+                    <ul class="navbar-nav d-flex align-items-center">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="mx-3 my-3">
+                                <a asp-controller="Cartctl" asp-action="Index"><i class="fa-solid fa-cart-shopping fa-2xl" style="color: #ffffff; cursor:pointer"></i></a>
+                            </li>
+
+                        }
+                        else
+                        {
+                            
+                        }
+                        @*Login Part when loginned*@
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="mx-3 my-3 dropdown position-relative" style="margin-left: auto;">
+                                <!-- 'margin-left: auto;' moves the dropdown to the right -->
+                                <a class="nav-link dropdown-toggle fs-4" href="#" data-bs-toggle="dropdown">
+                                    <i class="fa-solid fa-user fa-xl" style="color: #ffffff; cursor:pointer"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-start position-absolute" aria-labelledby="navbarDropdown" style="background-color:#395748; left:-50px;">
+                                    <a asp-controller="UserDetail" asp-action="Index" class="dropdown-item text-white"> รายละเอียดบัญชี </a>
+                                    <a asp-controller="Orderctl" asp-action="Index" class="dropdown-item text-white"> รายการสั่งซื้อ </a>
+                                    <a asp-controller="Addressctl" asp-action="Index" class="dropdown-item text-white"> ที่อยู่ </a>
+                                    <a asp-controller="Paymentctl" asp-action="Index" class="dropdown-item text-white"> ช่องทางการชำระเงิน </a>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a asp-controller="Bookctl" asp-action="List" class="dropdown-item text-white"> ปรับแต่งหนังสือ </a>
+                                        <a asp-controller="Eventctl" asp-action="List" class="dropdown-item text-white"> ปรับแต่งหน้า Event </a>
+                                        <a asp-controller="Newsctl" asp-action="List" class="dropdown-item text-white"> ปรับแต่งหน้าข่าว </a>
+                                    }
+                                    <a asp-controller="Accountctl" asp-action="logout" class="dropdown-item text-white text-decoration-underline"> Logout </a>
+                                </div>
+                            </li>
+
+                        }
+                        @*When didn't login*@
+                        else
+                        {
+                        <li class="mx-3 my-3">
+                                <a asp-controller="Accountctl" asp-action="Login" class="btn text-white" style="background-color:#4B9F3B">Login/Register</a>
+                        </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <main role="main" class="pb-3 px-5 pt-4" style="min-height:auto; margin-bottom:250px;">
+          
+            @RenderBody()
+            
+        </main>
+    <footer class="footer m-0 p-0" >
+        <div class="container-fluid p-0" style="background-color: #395748;">
+             <div class="d-flex flex-sm-row flex-column justify-content-between px-5 py-3 align-items-center">
+                <img src="/img/Healing_Shelter_1.png" width="200" height="100" style="object-fit:cover;" />
+                <ul class="navbar-nav d-none d-sm-flex flex-row ">
+                    <li class="nav-item mx-4">
+                        <a href="#" class="nav-link fs-4 text-white">หน้าแรก</a>
+                    </li>
+                    <li class="nav-item mx-4">
+                        <a href="#" class="nav-link fs-4 text-white">หมวดหมู่</a>
+                    </li>
+                    <li class="nav-item mx-4">
+                        <a href="#" class="nav-link fs-4 text-white">ข่าวสาร</a>
+                    </li>
+                </ul>
+            </div> 
+            <div class="d-flex justify-content-center">
+                <hr class="d-block my-2 bg-white" style="height: 3px; width: 95%;" />
+            </div>
+            <div class="px-5 py-3 d-flex flex-column flex-sm-row justify-content-between" style="line-height: 20px;">
+                <div class="d-block text-white text-wrap">
+                    <span class="d-flex justify-content-center justify-content-sm-start">Copyright © 2023 Healing shelter Book Center Co.,Ltd.</span>
+                    <span class="d-none d-sm-flex">E-Commerce Registration #0108114713184 | Terms & Conditions | Privacy Policy</span>
+                </div>
+                <div class="d-none d-sm-flex justify-content-center">
+                    <a class="mx-2"><img src="https://play-lh.googleusercontent.com/lKebetEHVDuBrbq5KJJ4MK6V6BaFuo0Mj9Qy9YZkoenrEDZVU-IzLrbAuoKMaCT4nA" width="50" height="50" /></a>
+                    <a class="mx-2"><img src="https://play-lh.googleusercontent.com/jMECkIn97zzMi1IoWlb9SYjtbYolSPmgdLmylwIwo3pbhQ_omkRMzM0bS-PnN461hg" width="50" height="50" /></a>
+                    <a class="mx-2"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuOWPh9ccfRqbpOoe9FSHq7D6CtXPqE4zaZUn38Q2cl4txxNvSfeAbpUVvJmXidR3SgYw&usqp=CAU" width="50" height="50" /></a>
+                    <a class="mx-2"><img src="https://play-lh.googleusercontent.com/eOzvk-ekluYaeLuvDkLb5RJ0KqfFQpodZDnppxPfpEfqEqbNo5erEkmwLBgqP-k-e2kQ" width="50" height="50" /></a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+    </div>
+    @*Footer *@
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        const birthdateInput = document.getElementById("birthdate");
+        flatpickr(birthdateInput, {
+            dateFormat: "d/m/Y",
+            placeholder: "วัน/เดือน/ปีเกิด",
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Show the pop-up when the button is clicked
+            $('#show-popup-btn').click(function () {
+                $('#login-popup').show();
+            });
+
+            $('#loginForm').submit(function (e) {
+                e.preventDefault(); // Prevent the default form submission
+
+                // Get form data
+                var formData = $(this).serialize();
+
+                // Send AJAX request
+                $.ajax({
+                    url: '/Account/Login', // Your login action endpoint
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Handle success response
+                        // For example, you can redirect the user or perform other actions
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error response
+                        console.error(error);
+                    }
+                });
+            });
+
+            // Close the pop-up when the close button is clicked
+            $('#close-popup-btn').click(function () {
+                $('#login-popup').hide();
+            });
+
+            $('#show-register-popup-btn').click(function () {
+                $('#register-popup').show();
+            });
+
+            $('#show-register-popup-btn').click(function () {
+                $('#login-popup').hide();
+            });
+
+            // Close the register pop-up when the close button is clicked
+            $('#close-register-popup-btn').click(function () {
+                $('#register-popup').hide();
+            });
+        });
+    </script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/c76d74beb3.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@*     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> *@
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+
+

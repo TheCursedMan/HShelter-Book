@@ -1,0 +1,27 @@
+﻿@model Event
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+    <div class="container container-sm container-margin-top container-custom-height">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="tewfont text-center smaller-font">
+                    <p>@Model.EventName</p>
+                </div>
+                <div class="justify-content-center container-margin-top">
+                    <img src="~/img/@Model.EventImgName" class="img-responsive img-smaller" />
+                </div>
+                <div class="tewfont smallers-font" style="margin-top: 25px; margin-left: 65px; margin-right: 65px;">
+                    <p style="text-align: left;">
+                       @Model.EventDescription
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+

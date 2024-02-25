@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Event>
+<div class="row d-flex align-content-center">
+    <a asp-action="Create" class="btn btn-success w-25 mb-5 col-2"> Create</a> <span class="text-secondary col-2">------ Create Here!!!</span>
+</div>
+
+@foreach (var item in Model)
+{
+    <div class="row border">
+        <div class="col-2 border"> @item.EventName</div>
+        <div class="col-2 border" style="max-height:200px; overflow:hidden;"> @item.EventDescription</div>
+        <div class="col-2 border"> @item.Eventdate</div>
+        <div class="col-2 border">
+            <img src="/img/@item.EventImgName" alt="@item.EventImgName" width="200" height="200" style="object-fit:contain">
+        </div>
+        <div class="col-2">
+            <a asp-action="Edit" asp-route-id="@item.EventId" class="btn btn-warning border">Edit </a>
+        </div>
+        <div class="col-2">
+            <a asp-action="Delete" asp-route-id="@item.EventId" class="btn btn-danger border">Delete </a>
+        </div>
+    </div>
+}

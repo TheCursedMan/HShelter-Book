@@ -1,0 +1,108 @@
+﻿@model Account
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Prompt' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/Tew.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-12 col-xl-3 mt-xl-5 mt-sm-2 text-center mb-xl-0 mb-4">
+
+                <div class="profile-picture align-items-center">
+                    <div class="picture-frame">
+                        <div class="profile-circle" style="overflow:hidden;">
+                            <img src="~/img/@Model.CustomerImgName" class="w-100 h-100" style="object-fit:cover">
+                        </div>
+                    </div>
+                    <div class="add-button">+</div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-xl-8">
+                <br />
+                <h1>แก้ไขข้อมูลส่วนตัว</h1>
+                <hr class="hr" />
+
+                <form asp-controller="UserDetail" asp-action="Edit" method="post" enctype="multipart/form-data">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label for="CustumerName">ชื่อ</label>
+                        <input asp-for="CustomerName" class="form-control" aria-label="ชื่อ" />
+                        <span asp-validation-for="CustomerName" class="text-danger"></span>
+                        <br />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CustumerName">นามสกุล</label>
+                        <input asp-for="CustomerSurname" class="form-control" aria-label="นามสกุล" />
+                        <span asp-validation-for="CustomerSurname" class="text-danger"></span>
+                        <br />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CustumerName">อีเมล <span class="text-danger"> (Not allow to Edit ) </span> </label>
+                        <input asp-for="UserName" class="form-control" aria-label="อีเมล" readonly/>
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                        <br />
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md">
+                            <label for="CustumerName">วัน/เดือน/ปีเกิด</label>
+                            <input asp-for="BirthDate" id="birthdate" class="form-control" type="text" aria-label="วัน/เดือน/ปีเกิด">
+                            <span asp-validation-for="BirthDate" class="text-danger"></span>
+                        </div>
+
+                        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+                        <script>
+                            const birthdateInput = document.getElementById("birthdate");
+                            flatpickr(birthdateInput, {
+                                dateFormat: "d/m/Y",
+                                placeholder: "วัน/เดือน/ปีเกิด",
+                            });</script>
+
+                        <div class="form-group col-xl-6 mt-xl-0 col-sm-12 mt-sm-4 mt-4">
+                            <label for="CustumerName">เพศ</label>
+                            <select asp-for="Gender" class="form-select" aria-label="เลือกเพศ">
+                                <option value="" selected disabled></option>
+                                <option value="Male">ชาย</option>
+                                <option value="Female">หญิง</option>
+                                <option value="Other">อื่นๆ</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                            <br />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CustumerName">เบอร์โทรศัพท์</label>
+                        <input asp-for="PhoneNumber" class="form-control" type="tel" aria-label="เบอร์โทรศัพท์" >
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        <br />
+                        <br />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="CustumerName">อัพโหลดรูปโปรไฟล์</label>
+                        <input asp-for="CustomerImg" class="form-control">
+                        <span asp-validation-for="CustomerImg" class="text-danger"></span>
+                        <br />
+                        <br />
+                    </div>
+
+
+                    <button type="submit" class="btn btn-success rounded-pill" style="width: 20%;">บันทึก</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>

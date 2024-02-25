@@ -1,0 +1,37 @@
+﻿@model IEnumerable<BookCategory>
+<h2>Category List  </h2>
+<a asp-action="CreateCategory" asp-controller="Bookctl" class="btn btn-success"> Create </a>
+<div class="row my-2 border-top">
+    <div class="col">
+       Id
+    </div>
+    <div class="col">
+       CategoryName
+    </div>
+    <div class="col">
+       Edit
+    </div>
+    <div class="col ">
+       Delete
+    </div>
+</div>
+    @foreach(var item in Model)
+    {
+        <div class="row my-2 border-top">
+            <div class="col">
+                @item.CategoryId
+            </div>
+             <div class="col">
+                @item.CategoryName
+            </div>
+             <div class="col">
+                <a asp-action="EditCategory" asp-route-id="@item.CategoryId"> Edit </a>
+            </div>
+                <div class="col text-black-50">
+                    @* <a asp-action="DeleteCategory" asp-route-id="@item.CategoryId"> Delete </a> *@
+                    Not allow to delete it will make many effect to book relate item 
+                </div>
+        </div>
+    }
+
+

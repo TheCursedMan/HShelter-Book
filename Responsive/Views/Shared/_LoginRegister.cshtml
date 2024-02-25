@@ -1,0 +1,191 @@
+﻿@model Login
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/css/Popup.css" asp-append-version="true" />
+</head>
+<body>
+    <div>
+        @*Pop-up*@
+        <div class="popup" id="login-popup">
+            <div class="center-container">
+                <div class="white-boxs">
+                    <div id="close-popup-btn" class="close-button">&#10006;</div>
+                    <div class="row">
+                        <div>
+                            <br />
+                            <br />
+                            <p class="tewf text-center">ล็อกอินเข้าสู่ระบบ</p>
+                        </div>
+                        <hr class="hr" />
+                        <form asp-controller="Accountctl" asp-action="Login" method="post">
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <br />
+                                <input name="Email" class="form-control taller-input" placeholder="ชื่อผู้ใช้หรืออีเมล" aria-label="ชื่อผู้ใช้หรืออีเมล" required />
+                                <br />
+                            </div>
+
+                            <div class="form-group">
+                                <input name="Password" class="form-control taller-input" type="password" placeholder="รหัสผ่าน" aria-label="รหัสผ่าน" required />
+                                <br />
+                            </div>
+
+                            @* <div class="form-group">
+                            <input type="checkbox" required />
+                            <label for="RememberMe">จดจำฉันไว้</label>
+                            <span class="underline" style="float: right;">ลืมรหัสผ่าน?</span>
+                            <br />
+                            <br />
+                            </div> *@
+                            <center><button type="submit" class="btn btn-success rounded-pill" style="width: 30%;">เข้าสู่ระบบ</button></center>
+                            <br />
+                            <br />
+                            <br />
+
+                            <div class="form-group center-content">
+                                <span class="underline">หากยังไม่ได้สมัครสมาชิก โปรด</span>
+                                <button type="button" id="show-register-popup-btn" class="btn btn-success rounded-pill" style="margin-left: 10px; " width: 42%;">ลงทะเบียน</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup" id="register-popup">
+            <div class="center-container">
+                <div class="white-box">
+                    <div id="close-register-popup-btn" class="close-button">&#10006;</div>
+                    <div class="row">
+                        <div>
+                            <p class="tewf text-center">ลงทะเบียน</p>
+                        </div>
+                        <div class="alert alert-danger">
+                            @TempData["Error"]?.ToString()
+                        </div>
+                        <hr class="hr" />
+
+                        <form asp-controller="Accountctl" asp-action="Register" method="post">
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="row">
+
+                                <div class="form-group col">
+                                    <input name="CustomerName" class="form-control" placeholder="ชื่อ" aria-label="ชื่อ" required />
+                                </div>
+
+                                <div class="form-group col-xl-6 mt-xl-0 col-sm-12 mt-sm-4 mt-4">
+                                    <input name="CustomerSurname" class="form-control" placeholder="นามสกุล" aria-label="นามสกุล" required />
+                                </div>
+                            </div>
+                            <br />
+
+                            <div class="row">
+                                <div class="form-group col">
+                                    <input id="birthdate" name="BirthDate" class="form-control" type="text" placeholder="วัน/เดือน/ปีเกิด" aria-label="วัน/เดือน/ปีเกิด">
+                                </div>
+
+                                <div class="form-group col-xl-6 mt-xl-0 col-sm-12 mt-sm-4 mt-4">
+                                    <select name="Gender" class="form-select" aria-label="เลือกเพศ" required>
+                                        <option value="" selected disabled>เพศ</option>
+                                        <option value="Male">ชาย</option>
+                                        <option value="Female">หญิง</option>
+                                        <option value="Other">อื่นๆ</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br />
+
+                            <div class="form-group">
+                                <input name="Email" class="form-control" type="email" placeholder="อีเมล์" aria-label="อีเมล์" required>
+                            </div>
+                            <br />
+
+                            <div class="form-group">
+                                <input name="Password" class="form-control" type="password" placeholder="รหัสผ่าน" aria-label="รหัสผ่าน" required />
+                            </div>
+                            <br />
+
+                            <div class="form-group">
+                                <input name="ConfirmPassword" class="form-control" type="password" placeholder="ยืนยันรหัสผ่าน" aria-label="ยืนยันรหัสผ่าน" required />
+                            </div>
+                            <br />
+
+                            <div class="form-group">
+                                <input type="checkbox" required />
+                                <label>ฉันยอมรับ<span class="underline">นโยบายความเป็นส่วนตัว</span></label>
+                            </div>
+                            <br />
+
+                            <center><button type="submit" class="btn btn-success rounded-pill" style="width: 42%;">ลงทะเบียน</button></center>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        const birthdateInput = document.getElementById("birthdate");
+        flatpickr(birthdateInput, {
+            dateFormat: "d/m/Y",
+            placeholder: "วัน/เดือน/ปีเกิด",
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Show the pop-up when the button is clicked
+            $('#show-popup-btn').click(function () {
+                $('#login-popup').show();
+            });
+
+            $('#loginForm').submit(function (e) {
+                e.preventDefault(); // Prevent the default form submission
+
+                // Get form data
+                var formData = $(this).serialize();
+
+                // Send AJAX request
+                $.ajax({
+                    url: '/Account/Login', // Your login action endpoint
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Handle success response
+                        // For example, you can redirect the user or perform other actions
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error response
+                        console.error(error);
+                    }
+                });
+            });
+
+            // Close the pop-up when the close button is clicked
+            $('#close-popup-btn').click(function () {
+                $('#login-popup').hide();
+            });
+
+            $('#show-register-popup-btn').click(function () {
+                $('#register-popup').show();
+            });
+
+            $('#show-register-popup-btn').click(function () {
+                $('#login-popup').hide();
+            });
+
+            // Close the register pop-up when the close button is clicked
+            $('#close-register-popup-btn').click(function () {
+                $('#register-popup').hide();
+            });
+        });
+    </script>
+</body>
+</html>

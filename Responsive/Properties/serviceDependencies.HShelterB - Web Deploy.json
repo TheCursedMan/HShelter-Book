@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/HShelterB/providers/Microsoft.ServiceLinker/linkers/ConnectionStringsBookRealProjectConnecti_A024029B33",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/hsheleterdbdbserver/databases/HSheleterDB",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:BookRealProjectConnectionString"
+    }
+  }
+}

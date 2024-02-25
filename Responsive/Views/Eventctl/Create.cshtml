@@ -1,0 +1,46 @@
+﻿@model Event;
+@{
+    ViewData["title"] = "Add Book";
+}
+<h1 class="text-center">Add Book</h1>​
+
+<form method="post" asp-controller="Eventctl" asp-action="Create" enctype="multipart/form-data">​
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">​
+
+        <label asp-for="EventName"></label>​
+
+        <input type="Text" asp-for="EventName" class="form-control"/>​
+        <span asp-validation-for="EventName" class="text-danger"></span>
+    </div>​
+
+     <div class="form-group">
+        <label asp-for="EventDescription"></label>
+        <textarea asp-for="EventDescription" class="form-control"></textarea>
+        <span asp-validation-for="EventDescription" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">​
+
+        <label asp-for="Eventdate"></label>​
+
+        <input type="date" asp-for="Eventdate" class="form-control"/>​
+        <span asp-validation-for="Eventdate" class="text-danger"></span>
+    </div>
+
+     <div class="form-group">​
+
+        <label asp-for="EventImg "></label>​
+
+        <input asp-for="EventImg" class="form-control" accept="image/*">​
+
+        <span asp-validation-for="EventImg" class="text-danger"></span>
+    </div>​
+​
+
+    <br />​
+
+    <button type="submit" class="btn btn-primary">Save</button>​
+     <a asp-action="Index">Back to List</a>
+
+</form>​

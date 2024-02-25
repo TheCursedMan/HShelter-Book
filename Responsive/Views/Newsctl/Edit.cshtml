@@ -1,0 +1,49 @@
+﻿@model News
+@{
+    ViewData["Title"] = "Edit";
+}
+<h1 class="text-center"> Edit </h1>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-controller="Newsctl" asp-action="Edit" enctype="multipart/form-data">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">​
+
+                <label asp-for="NewsName"></label>​
+
+                <input type="Text" asp-for="NewsName" class="form-control"/>​
+                <span asp-validation-for="NewsName" class="text-danger"></span>
+            </div>​
+
+             <div class="form-group">
+                <label asp-for="NewsDescription"></label>
+                <textarea asp-for="NewsDescription" class="form-control"></textarea>
+                <span asp-validation-for="NewsDescription" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">​
+
+                <label asp-for="NewsDate"></label>​
+
+                <input type="date" asp-for="NewsDate" class="form-control"/>​
+                <span asp-validation-for="NewsDate" class="text-danger"></span>
+            </div>
+
+             <div class="form-group">​
+
+                <label asp-for="NewsImg "></label>​
+
+                <input asp-for="NewsImg" class="form-control" accept="image/*">​
+
+                <span asp-validation-for="NewsImg" class="text-danger"></span>
+            </div>​
+​
+
+            <div class="form-gruop">
+                <button type="submit" class="btn btn-warning"> Update </button>
+                <a asp-action="List">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>

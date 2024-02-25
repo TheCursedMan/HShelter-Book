@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Order>
+
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Prompt' rel='stylesheet'>
+    <style>
+        * {
+            font-family: prompt;
+        }
+    </style>
+</head>
+<div class="border-bottom border-light-subtle mb-3">
+    <h3 class="text-secondary-emphasis"> รายการสั่งซื้อ </h3>
+</div>
+
+@foreach (var order in Model)
+{
+    <!-- Order Detail -->
+    <div class="border-success-subtle rounded mb-5 align-items-center">
+        <!-- Top part -->
+        <div class="d-flex align-items-start justify-content-between align-items-center border-bottom border-light-subtle">
+            <div>
+                <p>คำสั่งซื้อ @order.OrderId</p>
+                <p>วันที่สั่งซื้อ @order.OrderDate</p>
+            </div>
+            <div class="d-flex flex-column align-items-end flex-lg-row align-item-lg-center ">
+                <p class="mx-2">สถานะการจัดขนส่ง </p>
+                <div class="">
+                    <a class="btn btn-success rounded" asp-controller="Orderctl" asp-action="Detail" asp-route-id="@order.OrderId"> รายละเอียด </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Items -->
+        @foreach (var cartItem in order.OrderCartItems)
+        {
+            <!-- Order box -->
+            <div class="d-flex align-items-center border-bottom border-light-subtle">
+                <!-- Left Section -->
+                <div class="d-flex flex-row align-items-center w-100">
+                    <img src="/img/@cartItem?.Book?.BookImgName"
+                         class="m-4 " style="max-width:100%; max-height:100%; object-fit:contain;" width="200" height="175" />
+                    <div class="d-flex flex-column w-100">
+                        <p> @cartItem?.Book?.BookName</p>
+                        <div class="d-flex justify-content-between">
+                            <p>จำนวน: @cartItem?.Quantity</p>
+                            <p>@(cartItem?.Book?.BookPrice * cartItem?.Quantity)  บาท</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Bottom Part - Total Amount for the Order -->
+        <div class="d-flex justify-content-end border-bottom border-light-subtle align-items-center">
+            <p> 
+                รวม:
+                @{
+                    var newTotal = order.TotalAmount + 50;
+                    <span> @newTotal บาท</span>
+                }
+
+            </p>
+        </div>
+    </div>
+}

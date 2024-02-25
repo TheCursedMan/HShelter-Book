@@ -1,0 +1,249 @@
+﻿@model IEnumerable<CartItem>
+
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Prompt' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/Tew.css">
+</head>
+
+<style>
+    *{
+        font-family: prompt;
+    }
+    .hr-line {
+        margin: 25px 0;
+    }
+
+    .basket-header {
+        text-align: left;
+        margin-top: 30px;
+        margin-bottom: 5px;
+    }
+
+    .address-box {
+        width: 100%;
+        height: 100px;
+        background-color: #f0f0f0;
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+
+    .product-list {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .product-column {
+        width: 70%;
+    }
+
+    .conclusion {
+        background-color: #f0f0f0;
+        padding: 10px;
+    }
+
+    .conclusion-column {
+        width: 30%;
+    }
+
+    .payment {
+        background-color: #f0f0f0;
+        margin: 10px 0;
+        padding: 10px;
+    }
+
+    .product {
+        display: flex;
+        margin-bottom: 20px;
+    }
+
+        .product img {
+            width: 150px;
+            height: 220px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+    .product-details {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 10px 0;
+    }
+
+    .product-image {
+        display: flex;
+        margin-right: 30px;
+    }
+
+    .product-quantity {
+        display: flex;
+        align-items: center;
+    }
+
+    .quantity-btn {
+        margin: 0 10px;
+        cursor: pointer;
+        font-size: 30px;
+    }
+
+    .product-divider {
+        border: none;
+        width: 97%;
+        margin: 10px 0;
+    }
+
+</style>
+@if (TempData["CartMessageSuccess"] != null)
+{
+    <div class="alert alert-success"> @TempData["CartMessageSuccess"]</div>
+}
+@if (TempData["CartMessageFailed"] != null)
+{
+    <div class="alert alert-danger"> @TempData["CartMessageFailed"]</div>
+}
+@if (!Model.Any())
+{
+    <div class="alert alert-info mt-3"> Cart is empty</div>
+}
+    <div class="row">
+        <div class="container">
+            <h1 class="text-account-down basket-header">ตะกร้า</h1>
+
+            <div class="address-box">
+                <a asp-controller="Addressctl" asp-action="Index" class="link-black fs-4" style="text-decoration: none; color: grey; ">
+                <p style="margin: 0; font-size: 18px;">ที่อยู่  : @{var onlyaddress = ViewData["userAddress"] as UserAddress;
+                       <span> @onlyaddress?.Address </span>
+                }</p>
+                </a>
+            </div>
+            <br />
+            <div class="row">
+                <div class="product-list col-xl-12">
+                    <div class="product-column col-xl-9">
+                    @{
+                        decimal totalPrice = 0; 
+                    }
+                    @foreach(var cartItem in Model)
+                    {
+                        @if (cartItem?.Book?.BookPrice != null && cartItem?.Quantity != null)
+                        {
+                            decimal itemPrice = cartItem.Book.BookPrice * cartItem.Quantity;
+                            totalPrice += itemPrice;
+                        }
+                        <div class="row product">
+                            <div class="col-2 align-items-center justify-content-between product-image">
+                                <img src="~/img/@cartItem?.Book?.BookImgName" class="card-img-top mt-3" style="width: 190px; height: 260px; object-fit:contain">
+                            </div>
+                            <div class="col-3 align-items-center d-flex justify-content-between ">
+                                <span class="fs-6">  @cartItem?.Book?.BookName  </span>
+                                <span class="fs-6">  @cartItem?.Book?.BookCategory  </span>
+                            </div>
+                            <div class="col-2 align-items-center d-flex flex-row justify-content-center ">
+                                <form method="post" asp-controller="Cartctl" asp-action="UpdateQuantity" class="update-form w-50">
+                                    @*Name attribute is can use for the parameter names in controller it wouldn't be used only asp attribute*@
+                                    <div class="col-12 align-items-center d-flex flex-row justify-content-between px-2">
+                                        <input type="hidden" name="cartItemId" value="@cartItem?.CartItemId" class="form-control" />
+                                        <input type="number" name="newQuantity" value="@cartItem?.Quantity" class="form-control quantity-input" min="1" />
+                                        <button type="submit" class="btn btn-success ms-2 d-none">Update Quantity</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-3 align-items-center d-flex flex-row justify-content-between">
+                                <p>Total Price: <span class="total-price">@($"{cartItem?.Quantity * cartItem?.Book?.BookPrice:C}")</span></p>
+                                <form method="post" asp-controller="Cartctl" asp-action="Delete" class="delete-form">
+                                    <input type="hidden" name="cartItemId" value="@cartItem?.CartItemId" />
+                                    <button type="submit" class="btn btn-border-danger text-black-50 fw-light text-decoration-underline"> remove </button>
+                                </form>
+                            </div>
+                        </div>
+                        <hr class="product-divider">
+                    }
+                        <br />
+                        <br />
+                    </div>
+
+                    <div class="conclusion-column col-xl-3">
+                        <div class="conclusion">
+                            <h3>สรุปรายการ</h3>
+                            <hr class="hr-line" />
+
+                            <p>ราคารวม:  @($"{totalPrice:C}") บาท.-</p> @*Place here*@
+                            <p>ค่าจัดส่ง: 50 บาท.-</p>
+                            <hr class="hr-line" />
+                            <p>ราคาสุทธิ: @($"{totalPrice+50:C}") บาท.-</p>
+                             @{ViewData["TotalPriceOrder"] = totalPrice + 50;}
+
+                        </div>
+
+                        <div class="payment">
+                            <a asp-controller="Basket" asp-action="Payment" class="link-black fs-4" style="text-decoration: none; color: black; ">
+                                <h3>ช่องทางการชำระเงิน</h3>
+                            </a>
+                            <img src="data:image/png;base64,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" alt="VISA" width="50" height="50" style="margin-right: 5px;">
+                            <img src="https://cdn.vox-cdn.com/thumbor/ttHUTh41dvZk5BDu3yJOZvjHx94=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/13674554/Mastercard_logo.jpg" alt="mastercard" width="50" height="50" style="margin-right: 5px;">
+                            <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple126/v4/db/03/0a/db030a1c-2aea-14fb-9ed8-5a8fbca7b0aa/AppIcon-0-0-1x_U007emarketing-0-0-0-7-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/1024x1024bb.png" alt="True Money Wallet" width="50" height="50" style="margin-right: 5px;">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuOWPh9ccfRqbpOoe9FSHq7D6CtXPqE4zaZUn38Q2cl4txxNvSfeAbpUVvJmXidR3SgYw&usqp=CAU" alt="PomptPay" width="50" height="50" style="margin-right: 5px;">
+                            <img src="https://www.kasikornbank.com/SiteCollectionDocuments/about/img/logo/logo.png" alt="K-Bank" width="50" height="50">
+                        </div>
+                        <br />
+
+                            <div class="mt-3">
+                                <form method="post" asp-controller="Cartctl" asp-action="ConfirmOrder">
+                                    <input type="hidden" name="totalprice" value="@totalPrice" />
+                                    <button type="submit" class="btn btn-success">Confirm Order</button>
+                                </form>
+
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   @*  <script>
+        function updateQuantity(productId, operation) {
+            var quantityElement = document.getElementById("quantity_" + productId);
+            var priceElement = document.getElementById("price_" + productId);
+
+            var quantity = parseInt(quantityElement.innerText);
+            var originalPrice = parseFloat(priceElement.dataset.originalPrice); // Retrieve the original price
+
+            if (operation === 'increase') {
+                quantity += 1;
+            } else if (operation === 'decrease' && quantity > 1) {
+                quantity -= 1;
+            }
+
+            // Update quantity
+            quantityElement.innerText = quantity;
+
+            // Update price based on the original price
+            var price = quantity * originalPrice;
+            priceElement.innerText = price.toFixed(2) + " บาท.-"; // Display price with two decimal places
+        }
+    </script> *@
+    <script>
+        $(document).ready(function () {
+            $('.quantity-input').on('input', function () {
+                var form = $(this).closest('.row').find('.update-form');
+                form.submit();
+            });
+
+            // Optional: Prevent form submission on pressing Enter key in the quantity input field
+            $('.quantity-input').on('keypress', function (e) {
+                if (e.keyCode === 13) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+        });
+    </script>
